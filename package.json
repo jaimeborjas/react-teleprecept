@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@mantine/core": "^3.6.8",
+    "@mantine/form": "^4.0.0",
     "@mantine/hooks": "^3.6.8",
     "@mantine/modals": "^3.6.8",
     "@modulz/radix-icons": "^4.0.0",
@@ -40,5 +41,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.8",
+    "tailwindcss": "^3.0.23"
   }
 }

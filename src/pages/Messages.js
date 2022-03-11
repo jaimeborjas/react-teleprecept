@@ -41,8 +41,9 @@ export default function Messages() {
   ]
   messagePreview.forEach((message) => message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`)
   messages.forEach((message) => message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`)
+  let i =0;
   const messagePreviewComponents  = messagePreview.map((item) => <MessagePreview key={item.name} name={item.name} message={item.message} imageUrl={item.imageUrl} />)
-  const messageComponents  = messages.map((item) => <Message key={item.name} name={item.name} message={item.message} imageUrl={item.imageUrl} />)
+  const messageComponents  = messages.map((item) => <Message key={item.name + `${i++}`} name={item.name} message={item.message} imageUrl={item.imageUrl} />)
 
   return (
     <div className="body-container vertical-spacing">

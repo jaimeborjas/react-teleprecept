@@ -1,33 +1,12 @@
-import { Badge, Card, Text, Image, Group, Button, useMantineTheme, Paper, createStyles, TextInput, Title, PasswordInput, Select } from '@mantine/core';
-import { EyeClosedIcon, LockClosedIcon } from '@modulz/radix-icons';
+import { Card, Paper } from '@mantine/core';
 import { LoginForm } from 'components/forms/LoginForm';
 import React from 'react';
 
-const useStyles = createStyles((theme) => ({
-  main: {
-    width: 500,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center ',
-    height: '80vh',
-    margin: 'auto',
-  },
-  card: {
-    width: 340,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-}));
-
 export default function Login() {
-  const theme = useMantineTheme();
-  const { classes } = useStyles();
 
-  const secondaryColor = theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7];
   return (
-    <Paper className={classes.main}>
-      <Card shadow="sm" padding="lg">
+    <Paper className="m-auto flex place-content-center content-center justify-center lg:w-1/2">
+      <Card shadow="sm" padding="lg" className="mt-9 lg:w-2/3 md:w-2/3 w-4/5">
         <LoginForm/>
       </Card>
     </Paper>
