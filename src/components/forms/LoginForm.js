@@ -28,7 +28,7 @@ const LoginForm = () => {
   
   const navigate = useNavigate();
   useEffect(() => {
-    if(auth.user) navigate('/connect')
+    if(auth.user) navigate('/profile')
   })
  
 
@@ -45,7 +45,7 @@ const LoginForm = () => {
       .signIn(email, password)
       .then(() => {
         setLoading(false)
-        navigate('/connect', {replace: true})
+        navigate('/profile', {replace: true})
       })
       .catch((err) => {
         setError('Error Login in try again')

@@ -1,13 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import { createStyles, AppShell, Header, Navbar, Burger, MediaQuery, Anchor, ActionIcon, Image } from '@mantine/core';
-import { BrowserRouter as Router, Link, Routes, Route, NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { createStyles, AppShell, Header, Navbar, Burger, MediaQuery, Anchor, Image } from '@mantine/core';
+import { Link, NavLink } from 'react-router-dom';
 
 import logo from '../../img/logo.png';
 
-import Home from 'pages/Home';
 
-import { SunIcon, MoonIcon } from '@modulz/radix-icons';
 import { useAuth } from 'hooks/useAuth';
+import axios from 'axios';
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -52,6 +51,8 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export default function Layout({ children }) {
+  axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+  axios.defaults.headers.api = `123`;
   const { classes, cx } = useStyles();
   const [opened, setOpened] = useState(false);
   const auth = useAuth();
@@ -88,6 +89,12 @@ export default function Layout({ children }) {
     );
   });
   const navbarItems = navigation.map((item) => {
+    if (item.name == 'Log out')
+      return (
+        <Anchor key={item.name} onClick={auth.logout} className={classes.link}>
+          Logout
+        </Anchor>
+      );
     return (
       <NavLink onClick={() => setOpened((o) => !o)} to={item.href} key={item.name + 'nav'} className={({ isActive }) => (isActive ? cx(classes.link, classes.active) : classes.link)}>
         {item.name}

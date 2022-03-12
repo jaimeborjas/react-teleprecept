@@ -1,25 +1,44 @@
+//useFetch.js
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const useFetch = (endpoint) => {
-  const [data, setData] = useState([]);
 
-  async function fetchData() {
-    axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-    axios.defaults.headers.api = `123`;
-    const response = await axios.get(endpoint);
-    setData(response.data);
-  }
+
+/**
+ * @param {string} url
+ */
+const useFetch = (url) => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    try {
-      fetchData();
-    } catch (error) {
-      console.log(error);
+    const controller = new AbortController()
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        const res = await axios.get(url, { signal: controller.signal })
+        if(res.statusText !== 'OK') throw Error('could not fetch data')
+        setData(res.data)
+        setError(null)
+        setLoading(false)
+      } catch (error) {
+        if(error.message === 'canceled') {
+          setLoading(false)
+        }else if (error.response.status == 401) {
+          setError('Please log in')
+        }else{
+          setError(error.response)
+        }
+      } 
     }
-  }, []);
+    fetchData()
+    return () => {
+      controller.abort()
+    };
+  }, [url, data])
 
-  return data;
-};
+  return { data, loading, error }
+}
 
 export default useFetch;

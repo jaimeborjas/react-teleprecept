@@ -1,13 +1,19 @@
-import { Title, Group, TextInput, Select, PasswordInput, Button } from '@mantine/core'
-import { LockClosedIcon } from '@modulz/radix-icons'
-import { useAuth } from 'hooks/useAuth';
+import { Title, Group, TextInput, Select, PasswordInput, Button, ScrollArea, Textarea } from '@mantine/core'
 import React from 'react'
 
-export default function UpdateInfo({user, children}) {
-  console.log(user)
+let specialtyOptions = [
+  { value: 'ADHD', label: 'ADHD' },
+  { value: 'PTSD', label: 'PTSD' },
+  { value: 'Substance Abuse', label: 'Substance Abuse' },
+  { value: 'Biopolar Disorder', label: 'Biopolar Disorder' },
+  { value: 'Stress', label: 'Stress' },
+  { value: 'Anxiety', label: 'Anxiety' },
+];
+
+export default function UpdateInfo({userData, handleSubmit}) {
   return (
     <div>
-      {user}
+
     </div>
   )
 }
