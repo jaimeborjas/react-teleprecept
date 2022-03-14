@@ -1,7 +1,7 @@
-import { Button, Card, Group, Notification, PasswordInput, Text, Title } from '@mantine/core';
+import { Anchor, Button, Card, Group, Notification, PasswordInput, Text, Title } from '@mantine/core';
 import { Cross1Icon, LockClosedIcon } from '@modulz/radix-icons';
 import { useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import axios from 'axios';
 import { useForm } from '@mantine/form';
@@ -34,16 +34,21 @@ const ChangePassword = () => {
     };
     mutation.mutate(data, {
       onSuccess: () => {
-        setMessage('Check your inbox for a recovery link');
+        setMessage('Your password has been change');
       },
     });
   };
-  if (mutation.isError) console.log(mutation);
+
   return (
     <div className="m-auto flex items-center justify-center lg:w-2/3">
       <Card radius={10} shadow="sm" padding="lg" className="mt-9 lg:w-2/3 md:w-2/3 w-4/5">
         {message ? (
-          <Text>{message}</Text>
+          <Text>
+            {message}
+            <Anchor component={Link} to="/login">
+              Login
+            </Anchor>
+          </Text>
         ) : (
           <div className="h-fit space-y-4">
             <Title order={2} align="center">
