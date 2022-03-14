@@ -6,8 +6,11 @@ module.exports = {
     colors: {
       ...colors,
     },
+    backgroundImage: {
+      'home-curve': "url('/public/images/wave-haikei.svg')",
+    },
   },
   corePlugins: {
     preflight: false,
-  }
+  },
 };

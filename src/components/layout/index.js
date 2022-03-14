@@ -4,7 +4,6 @@ import { Link, NavLink } from 'react-router-dom';
 
 import logo from '../../img/logo.png';
 
-
 import { useAuth } from 'hooks/useAuth';
 import axios from 'axios';
 
@@ -105,10 +104,13 @@ export default function Layout({ children }) {
     <AppShell
       fixed
       navbarOffsetBreakpoint="sm"
+      padding={0}
       header={
         <Header height={60} className={classes.header}>
           <div style={{ width: 40 }} className="ml-20 sm:ml-15 md:ml-10">
-            <Anchor component={Link} to="/"><Image src={logo} /></Anchor>
+            <Anchor component={Link} to="/">
+              <Image src={logo} />
+            </Anchor>
           </div>
           <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
             <Burger opened={opened} onClick={() => setOpened((o) => !o)} size="lg" mr="lg" ml="lg" />
