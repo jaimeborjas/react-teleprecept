@@ -1,4 +1,4 @@
-import { Image, Title, Text, Divider, Button } from '@mantine/core';
+import { Image, Title, Text, Divider, Button, Tabs } from '@mantine/core';
 import nurse from '../img/nurse.svg';
 // import curve from '../img/wave-haikei.svg';
 import React from 'react';
@@ -36,6 +36,12 @@ function Home() {
             class="shape-fill"
           ></path>
         </svg>
+      </div>
+      <div className="flex item-center">
+        <Tabs>
+          <Tabs.Tab label="Preceptors">These are the benefits</Tabs.Tab>
+          <Tabs.Tab label="Students">These are the benefits</Tabs.Tab>
+        </Tabs>
       </div>
     </div>
   );
