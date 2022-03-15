@@ -35,7 +35,6 @@ export default function Profile() {
   const [userData, setUserData] = useState(null);
   const [connectData, setConnectData] = useState(null);
   const [allUsersData, setAllUsersrData] = useState(null);
-  const [connectedUserData, setConnectedUserData] = useState(null);
 
   const emailRef = useRef(null);
   const firstNameRef = useRef(null)
@@ -45,13 +44,21 @@ export default function Profile() {
   const bioRef = useRef(null)
   const specialtyRef = useRef(null)
   
+  function ConnectionList(user) {
+    const connections = user.connections;
+    const cards = connections.map((connection) => <ConnectCard key={connection.id} user={connection} />);  return (
+      {cards}  );
+  }
+
   useEffect(() => {
     async function loadInitialProfile() {
       const profile = await get('/userinfo')
       if(response.ok) setUserData(profile)
-      setConnectData(profile.connections)
       const users = await get('/users')
       if(response.ok) setAllUsersrData(users)
+      setConnectData(profile.connections)
+
+      
       
     }
     loadInitialProfile()
@@ -116,7 +123,7 @@ export default function Profile() {
         <Group></Group>
       </div>
       <ScrollArea style={{ height: '85vh' }} className="w-full md:w-2/3">
-        {allUsersData && allUsersData.map((item) => <ConnectCard key={item.id} user={item} />)}
+        {connectData && connectData.map((item) => <ConnectCard key={item.id} user={item} />)}   
       </ScrollArea>
     </div>
           </div>
