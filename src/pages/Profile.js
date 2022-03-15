@@ -1,9 +1,25 @@
-import { Timeline, Text, Divider, Title, Button, Checkbox, Modal, Group, TextInput, ScrollArea, Textarea, Select, Loader } from '@mantine/core';
+import { Card, Avatar, Timeline, Text, Divider, Title, Button, Checkbox, Modal, Group, TextInput, ScrollArea, Textarea, Select, Loader } from '@mantine/core';
 import { FaceIcon, GearIcon, ReaderIcon } from '@modulz/radix-icons';
 import React, { useEffect, useRef, useState } from 'react';
 import useFetch from 'use-http';
 
 
+const ConnectCard = ({ user }) => {
+  const { role } = user;
+  const { firstName, lastName, bio, location } = user.userInfo;
+  return (
+    <>
+      <Card className="w-full my-7 flex" shadow="md" padding="lg">
+      <Group className="w-20 mr-5">
+          <Avatar size={45} radius="xl" src={`https://ui-avatars.com/api/?name=${firstName} ${lastName}`} />
+        </Group>
+        <Group className="w-2/3 flex flex-col items-start">
+          <Text>{`${firstName} ${lastName}`}</Text>
+        </Group>
+      </Card>
+    </>
+  );
+};
 export default function Profile() {
   const [opened, setOpened] = useState(false);
   const options = {
@@ -17,6 +33,8 @@ export default function Profile() {
   const { get, patch, response, loading, error } = useFetch("https://teleprecept.herokuapp.com", options)
 
   const [userData, setUserData] = useState(null);
+  const [connectData, setConnectData] = useState(null);
+  const [allUsersData, setAllUsersrData] = useState(null);
 
   const emailRef = useRef(null);
   const firstNameRef = useRef(null)
@@ -25,11 +43,23 @@ export default function Profile() {
   const availabiiltyRef = useRef(null)
   const bioRef = useRef(null)
   const specialtyRef = useRef(null)
+  
+  function ConnectionList(user) {
+    const connections = user.connections;
+    const cards = connections.map((connection) => <ConnectCard key={connection.id} user={connection} />);  return (
+      {cards}  );
+  }
 
   useEffect(() => {
     async function loadInitialProfile() {
       const profile = await get('/userinfo')
       if(response.ok) setUserData(profile)
+      const users = await get('/users')
+      if(response.ok) setAllUsersrData(users)
+      setConnectData(profile.connections)
+
+      
+      
     }
     loadInitialProfile()
   }, [response])
@@ -88,27 +118,14 @@ export default function Profile() {
           </Modal>
 
           <div className="border w-1/3 justify-center hidden md:flex lg:flex mt-10">
-            <Timeline className="pl-20 border justify-center hidden md:flex lg:flex mt-10 flex-col"active={1} bulletSize={24} lineWidth={2}>
-              <Timeline.Item bullet={<FaceIcon />} title="New Profile">
-                <Text color="dimmed" size="sm">
-                  You&apos;ve created new profile
-                </Text>
-                <div className="h-4"></div>
-              </Timeline.Item>
-
-              <Timeline.Item bullet={<ReaderIcon />} title="Update Information">
-                <Text color="dimmed" size="sm">
-                  You&apos;ve update your profile information
-                </Text>
-                <div className="h-4"></div>
-              </Timeline.Item>
-              <Timeline.Item title="Unlock Connect" bullet={<GearIcon />} lineVariant="dashed">
-                <Text color="dimmed" size="sm">
-                  Update information to unlock connect
-                </Text>
-                <div className="h-4"></div>
-              </Timeline.Item>
-            </Timeline>
+          <div className="w-full flex">
+      <div className="hidden md:block md:w-1/3">
+        <Group></Group>
+      </div>
+      <ScrollArea style={{ height: '85vh' }} className="w-full md:w-2/3">
+        {connectData && connectData.map((item) => <ConnectCard key={item.id} user={item} />)}   
+      </ScrollArea>
+    </div>
           </div>
 
 
