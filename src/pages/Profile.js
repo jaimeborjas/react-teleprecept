@@ -123,6 +123,7 @@ export default function Profile() {
         <Group></Group>
       </div>
       <ScrollArea style={{ height: '85vh' }} className="w-full md:w-2/3">
+      <Title>Connections</Title>
         {connectData && connectData.map((item) => <ConnectCard key={item.id} user={item} />)}   
       </ScrollArea>
     </div>
