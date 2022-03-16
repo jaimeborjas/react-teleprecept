@@ -3,14 +3,13 @@ import nurse from '../img/nurse.svg';
 // import curve from '../img/wave-haikei.svg';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from 'img/logo.png'
-import book from 'img/book.png'
-import money from 'img/money.png'
-import certificate from 'img/certificate.png'
-import computer from 'img/computer.png'
-import clock from 'img/clock.png'
-import secure from 'img/secure.png'
-
+import logo from 'img/logo.png';
+import book from 'img/book.png';
+import money from 'img/money.png';
+import certificate from 'img/certificate.png';
+import computer from 'img/computer.png';
+import clock from 'img/clock.png';
+import secure from 'img/secure.png';
 
 function Home() {
   return (
@@ -34,7 +33,7 @@ function Home() {
         </div>
 
         <div className="w-2/3 flex justify-center items center">
-          <Image className="" src={nurse} />
+          <Image fit="cover" height={500} className="" src={nurse} />
         </div>
       </div>
       <div className="w-full absolute top-0 left-0 overflow-hidden  fill-blue-600">
@@ -46,17 +45,17 @@ function Home() {
         </svg>
       </div>
 
-      <h2 className="text-6xl flex justify-center items center">
-            <Text className="text-6xl inline text-blue-600 px-2">Benefits </Text>Include
-            </h2>
-        
-      <div className=" text-xl justify-center flex item-center"> 
-        <Tabs>
-           <Tabs.Tab label="Students">
-            <div className="flex">
+      <h2 className="text-4xl flex justify-center items center">
+        <Text className="text-4xl inline text-blue-600 px-2">Benefits </Text>Include
+      </h2>
+
+      <div className=" text-xl justify-center flex item-center">
+        <Tabs grow position="center">
+          <Tabs.Tab label="Students">
+            <div className="flex w-full px-20 text-center">
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
                 <img src={money} width="75px" p-0 alt="logo" />
-                <p className=" px-10"> Affordable Student-Preceptor Matching Service</p>
+                <p className=""> Affordable Student-Preceptor Matching Service</p>
               </div>
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
                 <img src={computer} width="75px" p-0 alt="logo" />
@@ -72,12 +71,12 @@ function Home() {
               </div>
             </div>
           </Tabs.Tab>
-          
+
           <Tabs.Tab label="Preceptors">
-            <div className="flex">
+            <div className="flex w-full px-20 text-center">
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
                 <img src={money} width="75px" p-0 alt="logo" />
-                <p className=" px-10">Monetary Compansaion</p>
+                <p className=" px-10">Monetary Compensation</p>
               </div>
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
                 <img src={book} width="75px" p-0 alt="logo" />
@@ -94,8 +93,8 @@ function Home() {
             </div>
           </Tabs.Tab>
         </Tabs>
-      </div>     
       </div>
+    </div>
   );
 }
 
