@@ -3,6 +3,14 @@ import nurse from '../img/nurse.svg';
 // import curve from '../img/wave-haikei.svg';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from 'img/logo.png'
+import book from 'img/book.png'
+import money from 'img/money.png'
+import certificate from 'img/certificate.png'
+import computer from 'img/computer.png'
+import clock from 'img/clock.png'
+import secure from 'img/secure.png'
+
 
 function Home() {
   return (
@@ -15,7 +23,7 @@ function Home() {
             </Title>
           </div>
           <div>
-            <Text className="text-3xl mb-16">Easily and Effortlessly Connect With Local Preceptors for Clinical Rotations !</Text>
+            <Text className="text-3xl mb-16">Easily and Effortlessly Connect With Preceptors for Clinical Rotations !</Text>
             <Button component={Link} to="/signup" size="xl">
               Create account
             </Button>
@@ -37,14 +45,59 @@ function Home() {
           ></path>
         </svg>
       </div>
-      <div className="flex item-center">
+
+      <h2 className="text-6xl flex justify-center items center">
+            <Text className="text-6xl inline text-blue-600 px-2">Benefits </Text>Include
+            </h2>
+        
+      <div className=" text-xl justify-center flex item-center"> 
         <Tabs>
-          <Tabs.Tab label="Preceptors">These are the benefits</Tabs.Tab>
-          <Tabs.Tab label="Students">These are the benefits</Tabs.Tab>
+           <Tabs.Tab label="Students">
+            <div className="flex">
+              <div className="w-1/4 flex flex-col justify-center items-center p-10">
+                <img src={money} width="75px" p-0 alt="logo" />
+                <p className=" px-10"> Affordable Student-Preceptor Matching Service</p>
+              </div>
+              <div className="w-1/4 flex flex-col justify-center items-center p-10">
+                <img src={computer} width="75px" p-0 alt="logo" />
+                <p>Complete Preceptorship Virtually or In-Person</p>
+              </div>
+              <div className="w-1/4 flex flex-col justify-center items-center p-10">
+                <img src={certificate} width="75px" p-0 alt="logo" />
+                <p>Certification of Completion Awarded</p>
+              </div>
+              <div className="w-1/4 flex flex-col justify-center items-center p-10">
+                <img src={secure} width="75px" p-0 alt="logo" />
+                <p>HIPAA, GDPR and PHIPA/PIPEDA Compliant </p>
+              </div>
+            </div>
+          </Tabs.Tab>
+          
+          <Tabs.Tab label="Preceptors">
+            <div className="flex">
+              <div className="w-1/4 flex flex-col justify-center items-center p-10">
+                <img src={money} width="75px" p-0 alt="logo" />
+                <p className=" px-10">Monetary Compansaion</p>
+              </div>
+              <div className="w-1/4 flex flex-col justify-center items-center p-10">
+                <img src={book} width="75px" p-0 alt="logo" />
+                <p>Access to Campus Library</p>
+              </div>
+              <div className="w-1/4 flex flex-col justify-center items-center p-10">
+                <img src={clock} width="75px" p-0 alt="logo" />
+                <p>Preceptor Hours Credited </p>
+              </div>
+              <div className="w-1/4 flex flex-col justify-center items-center p-10">
+                <img src={secure} width="75px" p-0 alt="logo" />
+                <p>HIPAA, GDPR and PHIPA/PIPEDA Compliant </p>
+              </div>
+            </div>
+          </Tabs.Tab>
         </Tabs>
+      </div>     
       </div>
-    </div>
   );
 }
 
 export default Home;
+
