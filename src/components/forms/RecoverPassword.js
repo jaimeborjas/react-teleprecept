@@ -1,7 +1,7 @@
 import { Anchor, Button, Card, Group, Notification, Text, TextInput, Title } from '@mantine/core';
 import { Cross1Icon } from '@modulz/radix-icons';
 import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import axios from 'axios';
 import endPoints from 'services/api';
@@ -9,6 +9,7 @@ import endPoints from 'services/api';
 const RecoverPassword = () => {
   const emailRef = useRef(null);
   const [message, setMessage] = useState(null);
+  const navigate = useNavigate();
   const mutation = useMutation((newUser) => {
     axios.defaults.headers.api = `123`;
     return axios.post(endPoints.base + '/auth/recovery', newUser);
@@ -21,7 +22,7 @@ const RecoverPassword = () => {
       { email: email },
       {
         onSuccess: () => {
-          setMessage('Check your inbox for a recovery link');
+          navigate('/login');
         },
       }
     );
