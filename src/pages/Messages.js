@@ -1,8 +1,21 @@
 import { Button, Input, TextInput } from '@mantine/core';
 import { Message, MessagePreview } from 'components/chat/Message';
-import React from 'react';
+import ''
+import { useEffect, React, useState } from 'react';
 import '../css/chat.css';
+import contacts from '../contacts.json';
+
 export default function Messages() {
+  const [contacts , setContacts]=useState(null)
+  const [chat , setChat]=useState(null)
+
+  useEffect(() => {
+    async function loadInitialMessages() {
+      setChat(contacts.contacts[1])
+      
+    }
+    loadInitialMessages()
+  })
   const messagePreview = [
     {
       name: 'Melissa Park',
@@ -39,12 +52,13 @@ export default function Messages() {
       message: 'Ok awesome I look forward to hearing from you soon!',
     },
   ];
-  messagePreview.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
-  messages.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
+  contacts.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
+  chat.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
   let i = 0;
-  const messagePreviewComponents = messagePreview.map((item) => <MessagePreview key={item.name} name={item.name} message={item.message} imageUrl={item.imageUrl} />);
-  const messageComponents = messages.map((item) => <Message key={item.name + `${i++}`} name={item.name} message={item.message} imageUrl={item.imageUrl} />);
-
+  const messagePreviewComponents = (chat && contacts.map((item) => <MessagePreview key={item.name} name={item.name} message={item.messages[-1]} imageUrl={item.imageUrl} />));
+  const messageComponents = (chat && chat.map((item) => <Message key={item.name + `${i++}`} name={item.name} message={item.message} imageUrl={item.imageUrl} />));
+  //const messagePreviewComponents = messagePreview.map((item) => <MessagePreview key={item.name} name={item.name} message={item.message} imageUrl={item.imageUrl} />);
+  //const messageComponents = messages.map((item) => <Message key={item.name + `${i++}`} name={item.name} message={item.message} imageUrl={item.imageUrl} />);
   return (
     <div className="body-container vertical-spacing">
       <div className="inbox-container">
@@ -88,3 +102,5 @@ export default function Messages() {
     </div>
   );
 }
+
+
