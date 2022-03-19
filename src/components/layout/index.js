@@ -107,7 +107,7 @@ export default function Layout({ children }) {
       padding={0}
       header={
         <Header height={60} className={classes.header}>
-          <div style={{ width: 40 }} className="xs:ml-8 sm:ml-14">
+          <div style={{ width: 40 }} className="ml-7 lg:ml-14">
             <Anchor component={Link} to="/">
               <Image src={logo} />
             </Anchor>
