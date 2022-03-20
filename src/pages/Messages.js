@@ -1,55 +1,66 @@
 import { Button, Input, TextInput } from '@mantine/core';
-import { Message, MessagePreview } from 'components/chat/Message';
-import React from 'react';
+//import { Message, MessagePreview } from 'components/chat/Message';
+import { useEffect, useState, React } from 'react';
 import '../css/chat.css';
-export default function Messages() {
-  const messagePreview = [
-    {
-      name: 'Melissa Park',
-      message: 'Ok awesome I look forward to hearing from you soon!',
-    },
-    {
-      name: 'Darren Englan',
-      message: 'Ok awesome I look forward to hearing from you soon!',
-    },
-    {
-      name: 'Kiran Fowler',
-      message: 'Ok awesome I look forward to hearing from you soon!',
-    },
-  ];
-  const messages = [
-    {
-      name: 'Melissa Parks',
-      message: 'Your resume is really impressive! Do you have time to talk about a possible preceptorship for the upcoming year',
-    },
-    {
-      name: 'Me',
-      message: 'I would love to talk about a preceptorship! I am available for the upcoming year.',
-    },
-    {
-      name: 'Melissa Parks',
-      message: 'Great! When do you think would be a good time to talk?',
-    },
-    {
-      name: 'Me',
-      message: 'I am available for a call any time this week',
-    },
-    {
-      name: 'Melissa Parks',
-      message: 'Ok awesome I look forward to hearing from you soon!',
-    },
-  ];
-  messagePreview.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
-  messages.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
+import contacts from '../contacts.js';
+
+var chatPointer = 0;
+const Message = ({name, message, imageUrl}) => {
+  return (
+    <div className="chat-message pointer-hover">
+      <img className="profile-image" src={imageUrl} alt="/" />
+      <span>
+        <p className="message-name">{name}</p>
+        <p className="message-content">{message}</p>
+      </span>
+    </div>
+  );
+};
+const MessagePreview = ({ id, name, message, imageUrl }) => {
+  
+  function changeChat(index)
+  {
+    chatPointer = index;
+  }
+  return (
+    <div className="contact-item pointer pointer-hover" onClick={() => changeChat(id)}>
+      <img className="profile-image" src={imageUrl} alt="/" />
+      <span>
+        <p>{name}</p>
+        <p className="text-preview">{message}</p>
+      </span>
+    </div>
+  );
+};
+
+export default function Messages() {  
+  const [chat, setChat] = useState(null);
+  const initialChat = contacts[0].messages;
+  contacts.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
+  initialChat.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
+  //setChat(initialChat);
   let i = 0;
-  const messagePreviewComponents = messagePreview.map((item) => <MessagePreview key={item.name} name={item.name} message={item.message} imageUrl={item.imageUrl} />);
-  const messageComponents = messages.map((item) => <Message key={item.name + `${i++}`} name={item.name} message={item.message} imageUrl={item.imageUrl} />);
+  //const messagePreviewComponents = messagePreview.map((item) => <MessagePreview key={item.name} name={item.name} message={item.message} imageUrl={item.imageUrl} />);
+  //const messageComponents = messages.map((item) => <Message key={item.name + `${i++}`} name={item.name} message={item.message} imageUrl={item.imageUrl} />)
+  function changeChat()
+  {
+    
+    console.log(chatPointer);
+    console.log(contacts[chatPointer].messages[0].message)
+    initialChat.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
+    setChat(contacts[chatPointer].messages);
+    
+  }
+  function getName()
+  {
+
+  }
 
   return (
     <div className="body-container vertical-spacing">
       <div className="inbox-container">
-        <div id="toggle-menu-contact" className="contact-box noselect">
-          {messagePreviewComponents}
+        <div id="toggle-menu-contact" className="contact-box noselect" onClick= {() => changeChat()}>
+          {contacts && contacts.map((item) => <MessagePreview key={item.name} id={item.id} name={item.name} message={item.messages[4].message} imageUrl={item.imageUrl} />)}
         </div>
         <div id="toggle-menu-chat" className="chat-box">
           <div className="chat-header">
@@ -57,12 +68,11 @@ export default function Messages() {
               <img src="img/svg/angle-double-left.svg" alt="" />
             </button>
             <span className="chat-header-text">
-              <p className="title-name">Melissa Parks</p>
-              <p className="title-status">Status: Online</p>
+              <p className="title-name">{contacts[chatPointer].name}</p>
             </span>
           </div>
           <div id="chat-container" className="chat-container">
-            {messageComponents}
+            {chat && chat.map((item) => <Message key={item.name + `${i++}`} name={item.name} message={item.message} imageUrl={item.imageUrl} />)}
           </div>
           <div className="chat-terminal">
             <form>
