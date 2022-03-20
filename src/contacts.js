@@ -1,14 +1,12 @@
 const contacts=
 [
-    "contacts":
-    [
         {
             "id": 0,
             "name": "Melissa Park",
             "messages": 
             [
                 {
-                    "person": "Melissa Park",
+                    "name": "Melissa Park",
                     "message": "Ok awesome I look forward to hearing from you soon!"
                 },
                 {
@@ -36,7 +34,7 @@ const contacts=
             "messages": 
             [
                 {
-                    "person": "Darren Englanrk",
+                    "name": "Darren Englanrk",
                     "message": "Ok awesome I look forward to hearing from you soon!"
                 },
                 {
@@ -64,7 +62,7 @@ const contacts=
             "messages": 
             [
                 {
-                    "person": "Kiran Fowler",
+                    "name": "Kiran Fowler",
                     "message": "Ok awesome I look forward to hearing from you soon!"
                 },
                 {
@@ -86,6 +84,5 @@ const contacts=
             ]
 
         }  
-    ]
 ]
 export default contacts;
