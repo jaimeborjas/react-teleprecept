@@ -1,6 +1,6 @@
 import { Button, Input, TextInput } from '@mantine/core';
 //import { Message, MessagePreview } from 'components/chat/Message';
-import { useEffect, useState, React } from 'react';
+import { useRef, useState, React } from 'react';
 import '../css/chat.css';
 import contacts from '../contacts.js';
 
@@ -34,6 +34,7 @@ const MessagePreview = ({ id, name, message, imageUrl }) => {
 };
 
 export default function Messages() {  
+  const textRef = useRef(null);
   const [chat, setChat] = useState(null);
   const initialChat = contacts[0].messages;
   contacts.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
@@ -52,6 +53,14 @@ export default function Messages() {
     initialChat.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
     setChat(contacts[chatPointer].messages);
     
+  }
+  
+  function sendChat()
+  {
+    setChat(chat + {
+      name: "Me",
+      message: textRef.current.value
+  })
   }
 
   return (
@@ -74,8 +83,8 @@ export default function Messages() {
           </div>
           <div className="chat-terminal">
             <form>
-              <TextInput placeholder="Enter Message" sx={{ width: '100%' }}></TextInput>
-              <Button>Send</Button>
+              <TextInput ref = {textRef}placeholder="Enter Message" sx={{ width: '100%' }}></TextInput>
+              <Button onClick={sendChat}>Send</Button>
             </form>
           </div>
         </div>
