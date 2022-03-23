@@ -39,6 +39,7 @@ export default function Profile() {
     axios.defaults.headers.api = `123`;
     axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
     const { data } = await axios.get(endPoints.base + '/userinfo');
+    console.log(data);
     return data;
   });
   const mutation = useMutation((newUser) => {
@@ -50,6 +51,7 @@ export default function Profile() {
   const emailRef = useRef(null);
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
+  const usernameRef = useRef(null);
   const locationRef = useRef(null);
   const availabiiltyRef = useRef(null);
   const bioRef = useRef(null);
@@ -107,14 +109,14 @@ export default function Profile() {
           <Modal opened={opened} onClose={() => setOpened(false)}>
             <Title align="center">Update your Information</Title>
             <ScrollArea className="mt-10" offsetScrollbars type="always" style={{ height: 300 }}>
-              <TextInput ref={emailRef} type="email" defaultValue={userData.email ?? ''} placeholder="Email" label="Email" required />
+              <TextInput ref={emailRef} type="email" defaultValue={userData.user.email ?? ''} placeholder="Email" label="Email" required />
               <Group>
-                <TextInput ref={firstNameRef} placeholder="First Name" defaultValue={userData.userInfo.firstName ?? ''} label="First Name" required />
-                <TextInput ref={lastNameRef} placeholder="Last Name" defaultValue={userData.userInfo.lastName ?? ''} label="Last Name" required />
+                <TextInput ref={firstNameRef} placeholder="First Name" defaultValue={userData.user.userInfo.firstName ?? ''} label="First Name" required />
+                <TextInput ref={lastNameRef} placeholder="Last Name" defaultValue={userData.user.userInfo.lastName ?? ''} label="Last Name" required />
               </Group>
-              <TextInput ref={locationRef} placeholder="Location" defaultValue={userData.userInfo.location ?? ''} label="Location" required />
-              <Select ref={specialtyRef} data={specialtyOptions} defaultValue={userData.userInfo.specialty ?? ''} placeholder="Specialty" label="Specialty" required />
-              <Textarea ref={bioRef} placeholder="Biography" defaultValue={userData.userInfo.bio ?? ''} label="Biography" required />
+              <TextInput ref={locationRef} placeholder="Location" defaultValue={userData.user.userInfo.location ?? ''} label="Location" required />
+              <Select ref={specialtyRef} data={specialtyOptions} defaultValue={userData.user.userInfo.specialty ?? ''} placeholder="Specialty" label="Specialty" required />
+              <Textarea ref={bioRef} placeholder="Biography" defaultValue={userData.user.userInfo.bio ?? ''} label="Biography" required />
             </ScrollArea>
             <Group sx={{ display: 'flex', justifyContent: 'center' }}>
               <Button loading={mutation.isLoading} onClick={submitHanlder} color="blue" style={{ marginTop: 14 }}>
@@ -143,47 +145,47 @@ export default function Profile() {
                 <Title className="inline-block mr-2" order={4}>
                   Email:
                 </Title>
-                {userData?.email ?? ''}
+                {userData?.user.email ?? ''}
               </Text>
 
               <Text className="flex justify-between">
                 <Title className="inline-block mr-2" order={4}>
                   First Name:
                 </Title>
-                {userData.userInfo.firstName ?? ''}
+                {userData.user.userInfo.firstName ?? ''}
               </Text>
               <Text className="flex justify-between">
                 <Title className="inline-block mr-2" order={4}>
                   Last Name:{' '}
                 </Title>
-                {userData.userInfo.lastName ?? ''}
+                {userData.user.userInfo.lastName ?? ''}
               </Text>
               <Text className="flex justify-between">
                 <Title className="inline-block mr-2" order={4}>
                   Location{' '}
                 </Title>
-                {userData.userInfo.location ?? ''}
+                {userData.user.userInfo.location ?? ''}
               </Text>
               <Text className="flex justify-between">
                 {' '}
                 <Title className="inline-block mr-2" order={4}>
                   Bio{' '}
                 </Title>
-                {userData.userInfo.bio ?? ''}
+                {userData.user.userInfo.bio ?? ''}
               </Text>
               <Text className="flex justify-between">
                 {' '}
                 <Title className="inline-block mr-2" order={4}>
                   Specialty:{' '}
                 </Title>
-                {userData.userInfo.specialty ?? ''}
+                {userData.user.userInfo.specialty ?? ''}
               </Text>
               <Text className="flex justify-between">
                 {' '}
                 <Title className="inline-block mr-2" order={4}>
                   Avilability:{' '}
                 </Title>
-                {userData.userInfo.availability ? <Checkbox checked disabled /> : <Checkbox />}
+                {userData.user.userInfo.availability ? <Checkbox checked disabled /> : <Checkbox />}
               </Text>
             </div>
           </div>

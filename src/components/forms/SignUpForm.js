@@ -32,6 +32,7 @@ export default function SignUpForm() {
     email: Joi.string()
       .email({ tlds: { allow: false } })
       .message('Invalid email'),
+    username: Joi.string().min(5).message('Username should be at least 5 characters.'),
     password: Joi.string().min(2).message('Password should have at least 8 characters'),
     confirmPassword: Joi.ref('password'),
     location: Joi.any(),
@@ -52,6 +53,7 @@ export default function SignUpForm() {
       lastName: '',
       role: '',
       email: '',
+      username: '',
       password: '',
       confirmPassword: '',
       location: '',
@@ -66,6 +68,7 @@ export default function SignUpForm() {
   const handleSubmit = async (values) => {
     const data = {
       email: values.email,
+      username: values.username,
       password: values.password,
       role: values.role,
       userInfo: {
@@ -73,7 +76,7 @@ export default function SignUpForm() {
         lastName: values.lastName,
         location: values.location,
         specialty: values.specialty,
-        bio: values.location,
+        bio: values.bio,
       },
     };
     await mutation.mutate(data, {
@@ -111,6 +114,7 @@ export default function SignUpForm() {
               required
             />
             <TextInput {...form.getInputProps('email')} placeholder="Email Address" label="Email Address" type="email" required />
+            <TextInput {...form.getInputProps('username')} description="Use of real name is discouraged." placeholder="Username" label="Username" required />
             <PasswordInput
               {...form.getInputProps('password')}
               icon={<LockClosedIcon />}
