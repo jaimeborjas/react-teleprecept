@@ -39,8 +39,10 @@ export default function Profile() {
     axios.defaults.headers.api = `123`;
     axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
     const { data } = await axios.get(endPoints.base + '/userinfo');
+
     return data;
   });
+
   const mutation = useMutation((newUser) => {
     axios.defaults.headers.api = `123`;
     axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
