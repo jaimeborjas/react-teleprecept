@@ -1,4 +1,4 @@
-import { Card, Group, Loader, Text, Avatar, Divider, Button, Title, ScrollArea } from '@mantine/core';
+import { Card, Group, Loader, Text, Avatar, Divider, Button, Title, ScrollArea, ActionIcon } from '@mantine/core';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
@@ -31,10 +31,10 @@ const UserCard = ({ user }) => {
       </Card>
     );
   return (
-    <div className="relative mb-10 shadow-lg md:m-5 w-96">
-      <div className="flex justify-end h-14 bg-blue-500  mb-12">
-        <span className="drop-shadow-lg">
-          <PlusCircledIcon className="scale-[2] m-5 drop-shadow-lg" color="white" size="50" />
+    <div className="relative mb-10 shadow-lg md:m-5 w-96 hover:scale-[1.01] transition ease-in-out delay-150 rounded-md">
+      <div className="flex justify-end h-14 bg-blue-500  mb-12 rounded-md">
+        <span className="drop-shadow-lg ">
+          <PlusCircledIcon onClick={handleConnect} className="scale-[2] m-5 drop-shadow-lg hover:scale-[2.3] transition ease-in-out cursor-pointer delay-150" color="white" size="50" />
         </span>
       </div>
       <div className="flex absolute w-24 h-24 left-10 top-6 rounded-full bg-white">
@@ -97,7 +97,7 @@ const Connect = () => {
   const { isLoading, data } = useQuery('users', async () => {
     axios.defaults.headers.api = `123`;
     axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-    const { data } = await axios.get(endPoints.base + '/users');
+    const { data } = await axios.get(endPoints.base + '/users/available');
     return data;
   });
 

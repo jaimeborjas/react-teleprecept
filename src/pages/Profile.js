@@ -104,7 +104,7 @@ export default function Profile() {
     <div>
       {isError && <p>{JSON.stringify(error)}</p>}
       {userData && (
-        <div className="w-full max-h-fit mt-12 divide-x-2 flex flex-col md:flex-row">
+        <div className="w-full max-h-fit mt-12 divide-x-2 flex flex-col lg:flex-row">
           <Modal opened={opened} onClose={() => setOpened(false)}>
             <Title align="center">Update your Information</Title>
             <ScrollArea className="mt-10" offsetScrollbars type="always" style={{ height: 300 }}>
@@ -124,27 +124,31 @@ export default function Profile() {
             </Group>
           </Modal>
 
-          <div className="border w-1/3 justify-center hidden md:flex lg:flex mt-10">
+          <div className="md:ml-3 lg:w-1/4 w-full mt-10">
             <div className="w-full flex flex-col justify-center items-center">
-              <Title order={3}>Your Connections</Title>
-              <ScrollArea style={{ height: '85vh' }} className="w-full md:w-2/3">
-                {userData.connections && userData.connections.map((item) => <ConnectCard key={item.id} user={item} />)}
-              </ScrollArea>
+              <Title>Connections</Title>
+              {userData.connections && userData.connections.filter((ele) => ele.Connection.accepted == true).map((item) => <ConnectCard key={item.id} user={item} />)}
             </div>
           </div>
 
-          <div className="md:ml-3 md:w-2/3 w-2/3 ">
-            <div className="flex justify-between w-5/6 md:w-4/5 mb-5 mx-10">
+          <div className="order-first lg:order-2 md:ml-3 md:w-5/6 w-full px-10 md:mx-10">
+            <div className="flex justify-between w-full md:w-full mb-5">
               <Title>Profile</Title>
               <Button onClick={() => setOpened((o) => !o)}>Edit</Button>
             </div>
-            <div className=" self-center w-5/6 md:w-3/4 h-2/3 space-y-4 mx-10">
+            <div className=" self-center w-5/6 md:w-full h-2/3 space-y-4 mx-10">
               <Divider className="mb-5" />
               <Text className="flex justify-between">
                 <Title className="inline-block mr-2" order={4}>
                   Email:
                 </Title>
                 {userData?.user.email ?? ''}
+              </Text>
+              <Text className="flex justify-between">
+                <Title className="inline-block mr-2" order={4}>
+                  Role:
+                </Title>
+                {userData?.user.role ?? ''}
               </Text>
 
               <Text className="flex justify-between">
@@ -186,6 +190,19 @@ export default function Profile() {
                 </Title>
                 {userData.user.userInfo.availability ? <Checkbox checked disabled /> : <Checkbox />}
               </Text>
+            </div>
+          </div>
+          <div className="md:ml-3 lg:w-1/4 w-full mt-10">
+            <div className="w-full flex flex-col justify-center items-center">
+              <Title>Requests</Title>
+              <div>
+                {userData.connections &&
+                  userData.connections
+                    .filter((ele) => {
+                      return ele.Connection.accepted === false;
+                    })
+                    .map((item) => <ConnectCard key={item.id} user={item} />)}
+              </div>
             </div>
           </div>
         </div>
