@@ -12,8 +12,8 @@ const UserCard = ({ user }) => {
     return axios.post(endPoints.base + '/users/connect', newUser);
   });
   const [isConnected, setIsConnected] = useState(false);
-  const { id, role } = user;
-  const { firstName, lastName, bio, location } = user.userInfo;
+  const { id, username, role } = user;
+  const { firstName, lastName, specialty, bio, location } = user.userInfo;
   const handleConnect = () => {
     const data = {
       connectionId: id,
@@ -31,7 +31,7 @@ const UserCard = ({ user }) => {
       </Card>
     );
   return (
-    <div className="relative mb-10 shadow-lg md:m-5">
+    <div className="relative mb-10 shadow-lg md:m-5 w-96">
       <div className="flex justify-end h-14 bg-blue-500  mb-12">
         <span className="drop-shadow-lg">
           <PlusCircledIcon className="scale-[2] m-5 drop-shadow-lg" color="white" size="50" />
@@ -42,7 +42,7 @@ const UserCard = ({ user }) => {
           <p>DD</p>
         </div>
       </div>
-      <p className="absolute top-11 left-36 hidden xs:block">@Username1982</p>
+      <p className="absolute top-11 left-36 hidden xs:block">@{username}</p>
       <div className="h-1/2 bg-white">
         <div className="grid grid-flow-col gap-1 xs:gap-10 ml-8 mr-8">
           <ul className="flex flex-col justify-evenly list-none p-0">
@@ -50,13 +50,13 @@ const UserCard = ({ user }) => {
               <span className="pr-2">
                 <StarIcon />
               </span>
-              Specialty
+              {specialty}
             </li>
             <li className="">
               <span className="pr-2">
                 <HomeIcon />
               </span>
-              Location
+              {location}
             </li>
             <li>
               <span className="pr-2">
@@ -69,7 +69,7 @@ const UserCard = ({ user }) => {
             <span className="pr-2">
               <InfoCircledIcon />
             </span>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum, rem.
+            {bio}
           </p>
         </div>
       </div>
