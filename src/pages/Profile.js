@@ -74,7 +74,6 @@ export default function Profile() {
         specialty: specialtyRef.current.value,
       },
     };
-    console.log(data);
     mutation.mutate(data, {
       onSuccess: () => {
         refetch();
