@@ -42,7 +42,7 @@ const UserCard = ({ user }) => {
           <p>DD</p>
         </div>
       </div>
-      <p className="absolute top-11 left-36 hidden xs:block">@{username}</p>
+      <p className="absolute top-11 left-36 hidden xs:block truncate">@{username}</p>
       <div className="h-1/2 bg-white">
         <div className="grid grid-flow-col gap-1 xs:gap-10 ml-8 mr-8">
           <ul className="flex flex-col justify-evenly list-none p-0">
@@ -107,7 +107,6 @@ const Connect = () => {
         <Loader />
       </div>
     );
-  console.log(data);
   return (
     <div className="w-full flex justify-center">
       {/* <div className="hidden md:block md:w-1/3">
@@ -117,8 +116,10 @@ const Connect = () => {
         <Group></Group>
       </div> */}
       <div>
-        <Title align="center">Connect with others:</Title>
-        <div className="w-full grid grid-cols-1 lg:grid-cols-2 m-auto">{data && data.map((item) => <UserCard key={item.id} user={item} />)}</div>
+        <Title className="my-5" align="center">
+          Connect with others:
+        </Title>
+        <div className="w-full gap-7 grid grid-cols-1 lg:grid-cols-2 justify-start">{data && data.map((item) => <UserCard key={item.id} user={item} />)}</div>
       </div>
     </div>
   );
