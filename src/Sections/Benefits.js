@@ -19,19 +19,19 @@ function Benefits() {
           <Tabs.Tab className="title text-lg" label="Students">
             <div className="flex w-full px-20 text-center">
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
-                <img src={money} width="75px" p-0 alt="logo" />
+                <img src={money} width="75px" alt="logo" />
                 <Text className="text text-lg text-center">Affordable Student-Preceptor Matching Service</Text>
               </div>
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
-                <img src={computer} width="75px" p-0 alt="logo" />
+                <img src={computer} width="75px" alt="logo" />
                 <Text className="text text-lg text-center">Complete Preceptorship Virtually or In-Person</Text>
               </div>
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
-                <img src={certificate} width="75px" p-0 alt="logo" />
+                <img src={certificate} width="75px" alt="logo" />
                 <Text className="text text-lg text-center">Certification of Completion Awarded</Text>
               </div>
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
-                <img src={secure} width="75px" p-0 alt="logo" />
+                <img src={secure} width="75px" alt="logo" />
                 <Text className="text text-lg text-center">HIPAA, GDPR and PHIPA/PIPEDA Compliant </Text>
               </div>
             </div>
@@ -40,19 +40,19 @@ function Benefits() {
           <Tabs.Tab className="title text-lg" label="Preceptors">
             <div className="flex w-full px-20 text-center">
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
-                <img src={money} width="75px" p-0 alt="logo" />
+                <img src={money} width="75px" alt="logo" />
                 <p className=" px-10">Monetary Compensation</p>
               </div>
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
-                <img src={book} width="75px" p-0 alt="logo" />
+                <img src={book} width="75px" alt="logo" />
                 <p>Access to Campus Library</p>
               </div>
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
-                <img src={clock} width="75px" p-0 alt="logo" />
+                <img src={clock} width="75px" alt="logo" />
                 <p>Preceptor Hours Credited </p>
               </div>
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
-                <img src={secure} width="75px" p-0 alt="logo" />
+                <img src={secure} width="75px" alt="logo" />
                 <p>HIPAA, GDPR and PHIPA/PIPEDA Compliant </p>
               </div>
             </div>

@@ -8,7 +8,7 @@ const AuthContext = createContext();
 
 export function ProviderAuth({ children }) {
   const userData = JSON.parse(localStorage.getItem('user'));
-  const [user, setUser] = useState(userData?.userInfo);
+  const [user, setUser] = useState(userData);
   const signIn = async (email, password) => {
     const options = {
       headers: {
