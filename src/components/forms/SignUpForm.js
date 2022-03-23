@@ -32,7 +32,7 @@ export default function SignUpForm() {
     email: Joi.string()
       .email({ tlds: { allow: false } })
       .message('Invalid email'),
-    username: Joi.string().min(5).message('Username should be at least 5 characters.'),
+    username: Joi.string().min(5).message('Username should be at least 5 characaters.').max(24).message('Username should be no more than 24 characaters.'),
     password: Joi.string().min(2).message('Password should have at least 8 characters'),
     confirmPassword: Joi.ref('password'),
     location: Joi.any(),

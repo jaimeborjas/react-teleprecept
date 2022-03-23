@@ -183,7 +183,7 @@ export default function Profile() {
               <Text className="flex justify-between">
                 {' '}
                 <Title className="inline-block mr-2" order={4}>
-                  Avilability:{' '}
+                  Availability:{' '}
                 </Title>
                 {userData.user.userInfo.availability ? <Checkbox checked disabled /> : <Checkbox />}
               </Text>

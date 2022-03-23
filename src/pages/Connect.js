@@ -118,7 +118,7 @@ const Connect = () => {
       </div> */}
       <div>
         <Title align="center">Connect with others:</Title>
-        <div className="w-5/6 grid grid-cols-1 lg:grid-cols-2 m-auto">{data && data.map((item) => <UserCard key={item.id} user={item} />)}</div>
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 m-auto">{data && data.map((item) => <UserCard key={item.id} user={item} />)}</div>
       </div>
     </div>
   );
