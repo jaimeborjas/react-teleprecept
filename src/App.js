@@ -1,6 +1,7 @@
 import Layout from 'components/layout';
 import { ProviderAuth, RequireAuth } from 'hooks/useAuth';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import io from 'socket.io-client';
 
 import { ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import { useLocalStorageValue } from '@mantine/hooks';
@@ -13,6 +14,7 @@ import Profile from 'pages/Profile';
 import Connect from 'pages/Connect';
 import { RecoverPassword } from 'components/forms/RecoverPassword';
 import { ChangePassword } from 'components/forms/ChangePassword';
+import { useEffect, useState } from 'react';
 
 const queryClient = new QueryClient();
 
@@ -23,6 +25,16 @@ export default function App() {
   });
   // @ts-ignore
   const toggleColorScheme = (value) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+  useEffect(() => {
+    const socket = io('http://localhost:3002/');
+    if (socket) {
+      socket.on('connect', () => {
+        console.log('connected to the socket');
+      });
+      socket.on('message', (message) => console.log(message));
+    }
+    return () => socket.disconnect();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
