@@ -1,14 +1,15 @@
 import { Button, Input, TextInput } from '@mantine/core';
 //import { Message, MessagePreview } from 'components/chat/Message';
+import { RequireAuth } from 'hooks/useAuth';
 import { useEffect, useRef, useState, React } from 'react';
+import axios from 'axios';
+import endPoints from 'services/api';
 import '../css/chat.css';
 import contacts from '../contacts.js';
-import { bool } from 'joi';
 
 var chatPointer = 0;
-const Message = ({name, message, imageUrl}) => {
-  if(name === "Me")
-    imageUrl = `https://ui-avatars.com/api/?name=Me`
+const Message = ({ name, message, imageUrl }) => {
+  if (name === 'Me') imageUrl = `https://ui-avatars.com/api/?name=Me`;
   return (
     <div className="chat-message pointer-hover">
       <img className="profile-image" src={imageUrl} alt="/" />
@@ -20,9 +21,7 @@ const Message = ({name, message, imageUrl}) => {
   );
 };
 const MessagePreview = ({ id, name, message, imageUrl }) => {
-  
-  function changeChat(index)
-  {
+  function changeChat(index) {
     chatPointer = index;
   }
   return (
@@ -37,6 +36,21 @@ const MessagePreview = ({ id, name, message, imageUrl }) => {
 };
 
 export default function Messages() {
+  const [selectedChat, setSelectedChat] = useState();
+  const [user, setUser] = useState();
+  const [chats, setChats] = useState();
+
+  const fetchConversations = async () => {
+    try {
+      const { data } = await axios.get(endPoints.base + '/messages');
+      console.log(data);
+      setChats(data);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    fetchConversations();
+  }, []);
+
   const textRef = useRef(null);
   const [chat, setChat] = useState(null);
   const initialChat = contacts[0].messages;
@@ -47,73 +61,67 @@ export default function Messages() {
   const initialChat3 = contacts[2].messages;
   initialChat3.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
   let i = 0;
-  //const messagePreviewComponents = messagePreview.map((item) => <MessagePreview key={item.name} name={item.name} message={item.message} imageUrl={item.imageUrl} />);
-  //const messageComponents = messages.map((item) => <Message key={item.name + `${i++}`} name={item.name} message={item.message} imageUrl={item.imageUrl} />)
-  useEffect(()=> {
-    console.log(chat);
-  });
 
-  function changeChat()
-  {
+  function changeChat() {
     const chats = contacts[chatPointer].messages;
     chats.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
     setChat(contacts[chatPointer].messages);
-    
   }
 
-  function sendChat()
-  {
+  function sendChat() {
     const message = {
-      name: "Me",
-      message: textRef.current.value
-    }
-    contacts[chatPointer].messages.push()
+      name: 'Me',
+      message: textRef.current.value,
+    };
+    contacts[chatPointer].messages.push();
     const chats = contacts[chatPointer].messages;
     chats.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
-    textRef.current.value=""
+    textRef.current.value = '';
     setChat((o) => [...o, message]);
     console.log(chat);
   }
 
   return (
-    <div className="body-container vertical-spacing">
-      <div className="inbox-container">
-        <div id="toggle-menu-contact" className="contact-box noselect" onClick= {() => changeChat()}>
-          {contacts && contacts.map((item) => <MessagePreview key={item.name} id={item.id} name={item.name} message={item.messages[4].message} imageUrl={item.imageUrl} />)}
-        </div>
-        <div id="toggle-menu-chat" className="chat-box">
-          <div className="chat-header">
-            <button id="menu-contact" className="icon-previous">
-              <img src="img/svg/angle-double-left.svg" alt="" />
-            </button>
-            <span className="chat-header-text">
-              <p className="title-name">{contacts[chatPointer].name}</p>
-            </span>
+    <RequireAuth>
+      <div className="body-container vertical-spacing">
+        <div className="inbox-container">
+          <div id="toggle-menu-contact" className="contact-box noselect" onClick={() => changeChat()}>
+            {contacts && contacts.map((item) => <MessagePreview key={item.name} id={item.id} name={item.name} message={item.messages[4].message} imageUrl={item.imageUrl} />)}
           </div>
-          <div id="chat-container" className="chat-container">
-            {chat && chat.map((item) => <Message key={item.name + `${i++}`} name={item.name} message={item.message} imageUrl={contacts[chatPointer].imageUrl} />)}
+          <div id="toggle-menu-chat" className="chat-box">
+            <div className="chat-header">
+              <button id="menu-contact" className="icon-previous">
+                <img src="img/svg/angle-double-left.svg" alt="" />
+              </button>
+              <span className="chat-header-text">
+                <p className="title-name">{contacts[chatPointer].name}</p>
+              </span>
+            </div>
+            <div id="chat-container" className="chat-container">
+              {chat && chat.map((item) => <Message key={item.name + `${i++}`} name={item.name} message={item.message} imageUrl={contacts[chatPointer].imageUrl} />)}
+            </div>
+            <div className="chat-terminal">
+              <form>
+                <TextInput ref={textRef} placeholder="Enter Message" sx={{ width: '100%' }}></TextInput>
+                <Button onClick={() => sendChat()}>Send</Button>
+              </form>
+            </div>
           </div>
-          <div className="chat-terminal">
-            <form>
-              <TextInput ref = {textRef}placeholder="Enter Message" sx={{ width: '100%' }}></TextInput>
-              <Button onClick={() => sendChat()}>Send</Button>
-            </form>
-          </div>
-        </div>
-        <div className="about-box">
-          <div className="about-header">
-            <p className="about-header-text">About</p>
-          </div>
-          <div className="about-profile">
-            <img className="profile-image" src="img/jpg/profile1.jpg" alt="" />
-            <p className="message-name">Melissa Parks</p>
-            <p className="message-content">
-              I am a preceptor at Allegheny General Hospital in Pittsburgh, Pennsylvania. I have been a preceptor for over 10 years and have experience precepting students and residents in Psychiatric
-              Mental Health.
-            </p>
+          <div className="about-box">
+            <div className="about-header">
+              <p className="about-header-text">About</p>
+            </div>
+            <div className="about-profile">
+              <img className="profile-image" src="img/jpg/profile1.jpg" alt="" />
+              <p className="message-name">Melissa Parks</p>
+              <p className="message-content">
+                I am a preceptor at Allegheny General Hospital in Pittsburgh, Pennsylvania. I have been a preceptor for over 10 years and have experience precepting students and residents in
+                Psychiatric Mental Health.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </RequireAuth>
   );
 }

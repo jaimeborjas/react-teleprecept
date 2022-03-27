@@ -5,6 +5,7 @@ import { Link, NavLink } from 'react-router-dom';
 import logo from '../../img/logo.png';
 
 import { useAuth } from 'hooks/useAuth';
+import { useNotifications } from 'hooks/useNotification';
 import axios from 'axios';
 
 const useStyles = createStyles((theme) => ({
@@ -55,6 +56,7 @@ export default function Layout({ children }) {
   const { classes, cx } = useStyles();
   const [opened, setOpened] = useState(false);
   const auth = useAuth();
+  const { notification } = useNotifications();
   const [navigation, setNavigation] = useState([]);
   useEffect(() => {
     if (!auth.user) {
@@ -73,9 +75,8 @@ export default function Layout({ children }) {
       ]);
     }
   }, [auth]);
-
   const menuItems = navigation.map((item) => {
-    if (item.name == 'Log out')
+    if (item.name === 'Log out')
       return (
         <Anchor key={item.name} onClick={auth.logout} className={classes.link}>
           Logout
@@ -88,7 +89,7 @@ export default function Layout({ children }) {
     );
   });
   const navbarItems = navigation.map((item) => {
-    if (item.name == 'Log out')
+    if (item.name === 'Log out')
       return (
         <Anchor key={item.name} onClick={auth.logout} className={classes.link}>
           Logout
@@ -115,7 +116,10 @@ export default function Layout({ children }) {
           <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
             <Burger opened={opened} onClick={() => setOpened((o) => !o)} size="lg" mr="lg" ml="lg" />
           </MediaQuery>
-          <div className={classes.links}>{menuItems}</div>
+          <div className={classes.links}>
+            {menuItems}
+            {notification.length > 0 ? 'pending' : 'nothing'}{' '}
+          </div>
         </Header>
       }
       navbar={

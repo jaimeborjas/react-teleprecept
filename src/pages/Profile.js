@@ -4,8 +4,9 @@ import React, { useRef, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import endPoints from 'services/api';
 
-const ConnectCard = ({ user }) => {
-  const { role } = user;
+const ConnectCard = ({ user, handleAccept }) => {
+  const { accepted, id: connectionId } = user.Connection;
+  const { role, username } = user;
   const { firstName, lastName, bio, location } = user.userInfo;
   return (
     <>
@@ -14,7 +15,9 @@ const ConnectCard = ({ user }) => {
           <Avatar size={45} radius="xl" src={`https://ui-avatars.com/api/?name=${firstName} ${lastName}`} />
         </Group>
         <Group className="w-2/3 flex flex-col items-start">
-          <Text>{`${firstName} ${lastName}`}</Text>
+          <Text>{`${username}`}</Text>
+          <Text>{`Role: ${role}`}</Text>
+          {accepted == true ? <div></div> : <Button onClick={() => handleAccept(connectionId)}>Accept</Button>}
         </Group>
       </Card>
     </>
@@ -48,6 +51,23 @@ export default function Profile() {
     return axios.patch(endPoints.base + '/users', newUser);
   });
 
+  const mutation1 = useMutation((newUser) => {
+    axios.defaults.headers.api = `123`;
+    axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+    return axios.post(endPoints.base + '/users/connect/accept', newUser);
+  });
+  const handleAccept = (connectionId) => {
+    const data = {
+      connectionId: connectionId,
+      accepted: true,
+    };
+    mutation1.mutate(data, {
+      onSuccess: () => {
+        refetch();
+      },
+    });
+  };
+
   const emailRef = useRef(null);
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
@@ -56,12 +76,6 @@ export default function Profile() {
   const availabiiltyRef = useRef(null);
   const bioRef = useRef(null);
   const specialtyRef = useRef(null);
-
-  function ConnectionList(user) {
-    const connections = user.connections;
-    const cards = connections.map((connection) => <ConnectCard key={connection.id} user={connection} />);
-    return { cards };
-  }
 
   async function updateProfile() {
     const data = {
@@ -127,7 +141,7 @@ export default function Profile() {
           <div className="md:ml-3 lg:w-1/4 w-full mt-10">
             <div className="w-full flex flex-col justify-center items-center">
               <Title>Connections</Title>
-              {userData.connections && userData.connections.filter((ele) => ele.Connection.accepted == true).map((item) => <ConnectCard key={item.id} user={item} />)}
+              {userData.connections && userData.connections.filter((ele) => ele.Connection.accepted == true).map((item) => <ConnectCard isConnected={true} key={item.id} user={item} />)}
             </div>
           </div>
 
@@ -199,9 +213,9 @@ export default function Profile() {
                 {userData.connections &&
                   userData.connections
                     .filter((ele) => {
-                      return ele.Connection.accepted === false;
+                      return ele.Connection.accepted === false && ele.Connection.userId == userData.user.id;
                     })
-                    .map((item) => <ConnectCard key={item.id} user={item} />)}
+                    .map((item) => <ConnectCard handleAccept={handleAccept} isConnected={false} key={item.id} user={item} />)}
               </div>
             </div>
           </div>
