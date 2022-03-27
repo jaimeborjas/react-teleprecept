@@ -3,10 +3,11 @@ const contacts=
         {
             "id": 0,
             "name": "Melissa Park",
+            "imageUrl": `https://ui-avatars.com/api/?name=Melissa_Park`,
             "messages": 
             [
                 {
-                    "person": "Melissa Park",
+                    "name": "Melissa Park",
                     "message": "Ok awesome I look forward to hearing from you soon!"
                 },
                 {
@@ -31,10 +32,11 @@ const contacts=
         {
             "id": 1,
             "name": "Darren Englan",
+            "imageUrl": `https://ui-avatars.com/api/?name=Darren_Englan`,
             "messages": 
             [
                 {
-                    "person": "Darren Englanrk",
+                    "name": "Darren Englanrk",
                     "message": "Ok awesome I look forward to hearing from you soon!"
                 },
                 {
@@ -59,10 +61,11 @@ const contacts=
         {
             "id": 2,
             "name": "Kiran Fowler",
+            "imageUrl": `https://ui-avatars.com/api/?name=Kiran_Fowler`,
             "messages": 
             [
                 {
-                    "person": "Kiran Fowler",
+                    "name": "Kiran Fowler",
                     "message": "Ok awesome I look forward to hearing from you soon!"
                 },
                 {
