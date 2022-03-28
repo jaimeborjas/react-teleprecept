@@ -1,9 +1,11 @@
 import { Button, Input, TextInput } from '@mantine/core';
 //import { Message, MessagePreview } from 'components/chat/Message';
+import { RequireAuth } from 'hooks/useAuth';
 import { useEffect, useRef, useState, React } from 'react';
+import axios from 'axios';
+import endPoints from 'services/api';
 import '../css/chat.css';
 import contacts from '../contacts.js';
-import { bool } from 'joi';
 
 var chatPointer = 0;
 const Message = ({ name, message, imageUrl }) => {
@@ -34,6 +36,21 @@ const MessagePreview = ({ id, name, message, imageUrl }) => {
 };
 
 export default function Messages() {
+  const [selectedChat, setSelectedChat] = useState();
+  const [user, setUser] = useState();
+  const [chats, setChats] = useState();
+
+  const fetchConversations = async () => {
+    try {
+      const { data } = await axios.get(endPoints.base + '/messages');
+      console.log(data);
+      setChats(data);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    fetchConversations();
+  }, []);
+
   const textRef = useRef(null);
   const [chat, setChat] = useState(null);
   const initialChat = contacts[0].messages;
@@ -44,11 +61,6 @@ export default function Messages() {
   const initialChat3 = contacts[2].messages;
   initialChat3.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
   let i = 0;
-  //const messagePreviewComponents = messagePreview.map((item) => <MessagePreview key={item.name} name={item.name} message={item.message} imageUrl={item.imageUrl} />);
-  //const messageComponents = messages.map((item) => <Message key={item.name + `${i++}`} name={item.name} message={item.message} imageUrl={item.imageUrl} />)
-  useEffect(() => {
-    console.log(chat);
-  });
 
   function changeChat() {
     const chats = contacts[chatPointer].messages;

@@ -1,6 +1,7 @@
 import Layout from 'components/layout';
-import { ProviderAuth, RequireAuth } from 'hooks/useAuth';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { ProviderAuth } from 'hooks/useAuth';
+import { NotificationsProvider } from 'hooks/useNotification';
+import io from 'socket.io-client';
 
 import { ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import { useLocalStorageValue } from '@mantine/hooks';
@@ -13,20 +14,21 @@ import Profile from 'pages/Profile';
 import Connect from 'pages/Connect';
 import { RecoverPassword } from 'components/forms/RecoverPassword';
 import { ChangePassword } from 'components/forms/ChangePassword';
-
-const queryClient = new QueryClient();
+import { useEffect, useState } from 'react';
+import endPoints from 'services/api';
 
 export default function App() {
   const [colorScheme, setColorScheme] = useLocalStorageValue({
     key: 'mantine-color-scheme',
     defaultValue: 'light',
   });
+  const [socket, setSocket] = useState(null);
   // @ts-ignore
   const toggleColorScheme = (value) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
+    <Router>
+      <NotificationsProvider>
         <ProviderAuth>
           <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
             <MantineProvider
@@ -47,14 +49,7 @@ export default function App() {
                     Hello
                   </Route>
                   <Route path="/profile" element={<Profile />}></Route>
-                  <Route
-                    path="/messages"
-                    element={
-                      <RequireAuth>
-                        <Messages />
-                      </RequireAuth>
-                    }
-                  ></Route>
+                  <Route path="/messages" element={<Messages />}></Route>
                   <Route path="/login" element={<Login />}></Route>
                   <Route path="/signup" element={<SignUp />}></Route>
                   <Route path="/recover" element={<RecoverPassword />}></Route>
@@ -66,7 +61,7 @@ export default function App() {
             </MantineProvider>
           </ColorSchemeProvider>
         </ProviderAuth>
-      </Router>
-    </QueryClientProvider>
+      </NotificationsProvider>
+    </Router>
   );
 }
