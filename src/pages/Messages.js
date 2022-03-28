@@ -125,13 +125,11 @@ export default function Messages() {
               <img className="w-12 h-12 rounded-full cursor-pointer" src="https://ui-avatars.com/api/?name=Me" alt="/" />
               <div className="flex flex-col justify-between pl-2">
                 <p className="text-md m-0">
-                  Message in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a
-                  bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle Message in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a
-                  bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle Message in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a
-                  bottle in a bottle in a bottle in a bottle in a bottle in a bottle in a bottle
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti blanditiis reiciendis atque ducimus voluptate, molestiae ex aspernatur. Ad provident blanditiis ducimus quo
+                  necessitatibus, ut saepe similique, repudiandae, sed voluptate soluta ipsa? Ex quas totam possimus error dolores, non eveniet veritatis!
                 </p>
               </div>
-              <p className="absolute text-md m-0 top-0 right-0 p-2">3/27/22</p>
+              <p className="absolute text-md m-0 top-0 right-0 p-2 -translate-y-2">3/27/22</p>
             </div>
           </div>
           {/* Form section, message form, submit message button */}
