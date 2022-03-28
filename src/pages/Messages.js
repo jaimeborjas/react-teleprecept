@@ -114,10 +114,10 @@ export default function Messages() {
             <p className="text-lg font-bold m-auto pl-14 justify-self-center">@Username</p>
             {/* This p tag will be a button that will allow the user to sort by read/unread */}
             <p className="text-lg font-bold w-14 pr-5 cursor-pointer">...</p>
-            {/* <div className="absolute bg-white border-solid border-2 border-gray-200 w-24 h-fit right-0 top-0 translate-y-12 translate-x-6 z-10 shadow-lg rounded-md">
+            <div className="absolute bg-white border-solid border-2 border-gray-200 w-24 h-fit right-0 top-0 translate-y-12 translate-x-6 z-10 shadow-lg rounded-md">
               <p className="text-md underline m-auto pl-2 my-2 cursor-pointer">Archive</p>
               <p className="text-md underline m-auto pl-2 my-2 cursor-pointer">Report</p>
-            </div> */}
+            </div>
           </div>
           <div className="overflow-hidden overflow-y-auto h-full">
             {/* Message item components will be rendered here */}
