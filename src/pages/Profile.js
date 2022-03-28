@@ -4,8 +4,8 @@ import React, { useRef, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import endPoints from 'services/api';
 
-const ConnectCard = ({ user, handleAccept }) => {
-  const { accepted, id: connectionId } = user.Connection;
+const ConnectCard = ({ userId, user, handleAccept }) => {
+  const { accepted, id: connectionId, userId: requestId } = user.Connection;
   const { role, username } = user;
   const { firstName, lastName, bio, location } = user.userInfo;
   return (
@@ -17,7 +17,7 @@ const ConnectCard = ({ user, handleAccept }) => {
         <Group className="w-2/3 flex flex-col items-start">
           <Text>{`${username}`}</Text>
           <Text>{`Role: ${role}`}</Text>
-          {accepted == true ? <div></div> : <Button onClick={() => handleAccept(connectionId)}>Accept</Button>}
+          {accepted === true || userId === requestId ? <div></div> : <Button onClick={() => handleAccept(connectionId)}>Accept</Button>}
         </Group>
       </Card>
     </>
@@ -160,6 +160,12 @@ export default function Profile() {
               </Text>
               <Text className="flex justify-between">
                 <Title className="inline-block mr-2" order={4}>
+                  Username:
+                </Title>
+                {userData?.user.username ?? ''}
+              </Text>
+              <Text className="flex justify-between">
+                <Title className="inline-block mr-2" order={4}>
                   Role:
                 </Title>
                 {userData?.user.role ?? ''}
@@ -213,9 +219,9 @@ export default function Profile() {
                 {userData.connections &&
                   userData.connections
                     .filter((ele) => {
-                      return ele.Connection.accepted === false && ele.Connection.userId == userData.user.id;
+                      return ele.Connection.accepted === false;
                     })
-                    .map((item) => <ConnectCard handleAccept={handleAccept} isConnected={false} key={item.id} user={item} />)}
+                    .map((item) => <ConnectCard userId={userData.user.id} handleAccept={handleAccept} isConnected={false} key={item.id} user={item} />)}
               </div>
             </div>
           </div>

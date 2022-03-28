@@ -1,7 +1,6 @@
 import Layout from 'components/layout';
 import { ProviderAuth } from 'hooks/useAuth';
 import { NotificationsProvider } from 'hooks/useNotification';
-import io from 'socket.io-client';
 
 import { ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import { useLocalStorageValue } from '@mantine/hooks';
@@ -22,7 +21,6 @@ export default function App() {
     key: 'mantine-color-scheme',
     defaultValue: 'light',
   });
-  const [socket, setSocket] = useState(null);
   // @ts-ignore
   const toggleColorScheme = (value) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
 

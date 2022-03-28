@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
+import endPoints from './api';
 
-const socket = io('http://localhost:3002');
+const socket = io(endPoints.base);
 socket.on('connect', () => {
   console.log('connected');
 });

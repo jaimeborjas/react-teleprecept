@@ -58,6 +58,7 @@ export default function Layout({ children }) {
   const auth = useAuth();
   const { notification } = useNotifications();
   const [navigation, setNavigation] = useState([]);
+  console.log('notification ' + notification);
   useEffect(() => {
     if (!auth.user) {
       setNavigation([
@@ -118,7 +119,7 @@ export default function Layout({ children }) {
           </MediaQuery>
           <div className={classes.links}>
             {menuItems}
-            {notification.length > 0 ? 'pending' : 'nothing'}{' '}
+            {/* {notification.length > 0 ? 'pending' : 'nothing'}{' '} */}
           </div>
         </Header>
       }

@@ -1,25 +1,16 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import io from 'socket.io-client';
+import socket from 'services/socket';
 
 const NofificationContext = createContext();
 const NotificationsProvider = ({ children }) => {
   const [notification, setNotification] = useState([]);
-  const [socket, setSocket] = useState();
 
   useEffect(() => {
-    const newSocket = io('http://localhost:3002');
-    setSocket(newSocket);
-    if (socket) {
-      socket.on('connect', () => {
-        console.log('connected');
-      });
-      socket.on('message', (message) => {
-        console.log(message);
-      });
-    }
-  }, [setSocket]);
-  console.log(socket);
+    socket.on('message', (message) => {
+      setNotification([message]);
+    });
+  }, []);
   return (
     <NofificationContext.Provider
       value={{
