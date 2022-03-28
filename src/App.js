@@ -29,7 +29,18 @@ export default function App() {
       <Router>
         <ProviderAuth>
           <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-            <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme }}>
+            <MantineProvider
+              withGlobalStyles
+              withNormalizeCSS
+              theme={{
+                colorScheme,
+                fontFamily: 'Roboto',
+                fontFamilyMonospace: 'Roboto',
+                headings: {
+                  fontFamily: 'Poppins',
+                },
+              }}
+            >
               <Layout>
                 <Routes>
                   <Route path="/connect" element={<Connect />}>

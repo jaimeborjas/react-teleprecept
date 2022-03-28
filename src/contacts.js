@@ -3,6 +3,7 @@ const contacts=
         {
             "id": 0,
             "name": "Melissa Park",
+            "imageUrl": `https://ui-avatars.com/api/?name=Melissa_Park`,
             "messages": 
             [
                 {
@@ -31,6 +32,7 @@ const contacts=
         {
             "id": 1,
             "name": "Darren Englan",
+            "imageUrl": `https://ui-avatars.com/api/?name=Darren_Englan`,
             "messages": 
             [
                 {
@@ -59,6 +61,7 @@ const contacts=
         {
             "id": 2,
             "name": "Kiran Fowler",
+            "imageUrl": `https://ui-avatars.com/api/?name=Kiran_Fowler`,
             "messages": 
             [
                 {
@@ -83,6 +86,6 @@ const contacts=
                 }
             ]
 
-        }  
+        } 
 ]
 export default contacts;

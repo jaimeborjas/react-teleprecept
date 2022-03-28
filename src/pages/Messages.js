@@ -1,11 +1,14 @@
 import { Button, Input, TextInput } from '@mantine/core';
 //import { Message, MessagePreview } from 'components/chat/Message';
-import { useRef, useState, React } from 'react';
+import { useEffect, useRef, useState, React } from 'react';
 import '../css/chat.css';
 import contacts from '../contacts.js';
+import { bool } from 'joi';
 
 var chatPointer = 0;
 const Message = ({name, message, imageUrl}) => {
+  if(name === "Me")
+    imageUrl = `https://ui-avatars.com/api/?name=Me`
   return (
     <div className="chat-message pointer-hover">
       <img className="profile-image" src={imageUrl} alt="/" />
@@ -33,7 +36,7 @@ const MessagePreview = ({ id, name, message, imageUrl }) => {
   );
 };
 
-export default function Messages() {  
+export default function Messages() {
   const textRef = useRef(null);
   const [chat, setChat] = useState(null);
   const initialChat = contacts[0].messages;
@@ -43,24 +46,33 @@ export default function Messages() {
   initialChat2.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
   const initialChat3 = contacts[2].messages;
   initialChat3.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
-
   let i = 0;
   //const messagePreviewComponents = messagePreview.map((item) => <MessagePreview key={item.name} name={item.name} message={item.message} imageUrl={item.imageUrl} />);
   //const messageComponents = messages.map((item) => <Message key={item.name + `${i++}`} name={item.name} message={item.message} imageUrl={item.imageUrl} />)
+  useEffect(()=> {
+    console.log(chat);
+  });
+
   function changeChat()
   {
-    console.log(chatPointer);
-    initialChat.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
+    const chats = contacts[chatPointer].messages;
+    chats.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
     setChat(contacts[chatPointer].messages);
     
   }
-  
+
   function sendChat()
   {
-    setChat(chat + {
+    const message = {
       name: "Me",
       message: textRef.current.value
-  })
+    }
+    contacts[chatPointer].messages.push()
+    const chats = contacts[chatPointer].messages;
+    chats.forEach((message) => (message.imageUrl = `https://ui-avatars.com/api/?name=${message.name}`));
+    textRef.current.value=""
+    setChat((o) => [...o, message]);
+    console.log(chat);
   }
 
   return (
@@ -79,12 +91,12 @@ export default function Messages() {
             </span>
           </div>
           <div id="chat-container" className="chat-container">
-            {chat && chat.map((item) => <Message key={item.name + `${i++}`} name={item.name} message={item.message} imageUrl={item.imageUrl} />)}
+            {chat && chat.map((item) => <Message key={item.name + `${i++}`} name={item.name} message={item.message} imageUrl={contacts[chatPointer].imageUrl} />)}
           </div>
           <div className="chat-terminal">
             <form>
               <TextInput ref = {textRef}placeholder="Enter Message" sx={{ width: '100%' }}></TextInput>
-              <Button onClick={sendChat}>Send</Button>
+              <Button onClick={() => sendChat()}>Send</Button>
             </form>
           </div>
         </div>

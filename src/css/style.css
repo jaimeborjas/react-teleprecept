@@ -1,0 +1,27 @@
+
+.about,
+.review {
+  text-align: center;
+  color: #0646d1;
+}
+.span {
+  text-decoration: none;
+  color: black;
+
+  font-family: 'Roboto';
+}
+.text-span {
+  margin-left: 10px;
+}
+.nurse-image {
+  max-width: 400.4px;
+  max-height: 366px;
+  height: auto;
+}
+.div-team {
+  display: block;
+  box-sizing: border-box;
+  height: 500px;
+  background-color: grey;
+  clip-path: ellipse(186% 100% at 20.08% 0%);
+}
