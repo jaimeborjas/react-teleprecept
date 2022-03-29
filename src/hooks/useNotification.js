@@ -7,7 +7,7 @@ const NotificationsProvider = ({ children }) => {
   const [notification, setNotification] = useState([]);
 
   useEffect(() => {
-    socket.on('message', (message) => {
+    socket.on('notification', (message) => {
       setNotification([message]);
     });
   }, []);
