@@ -4,8 +4,9 @@ import React, { useRef, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import endPoints from 'services/api';
 
-const ConnectCard = ({ user }) => {
-  const { role } = user;
+const ConnectCard = ({ userId, user, handleAccept }) => {
+  const { accepted, id: connectionId, userId: requestId } = user.Connection;
+  const { role, username } = user;
   const { firstName, lastName, bio, location } = user.userInfo;
   return (
     <>
@@ -14,7 +15,9 @@ const ConnectCard = ({ user }) => {
           <Avatar size={45} radius="xl" src={`https://ui-avatars.com/api/?name=${firstName} ${lastName}`} />
         </Group>
         <Group className="w-2/3 flex flex-col items-start">
-          <Text>{`${firstName} ${lastName}`}</Text>
+          <Text>{`${username}`}</Text>
+          <Text>{`Role: ${role}`}</Text>
+          {accepted === true || userId === requestId ? <div></div> : <Button onClick={() => handleAccept(connectionId)}>Accept</Button>}
         </Group>
       </Card>
     </>
@@ -48,6 +51,23 @@ export default function Profile() {
     return axios.patch(endPoints.base + '/users', newUser);
   });
 
+  const mutation1 = useMutation((newUser) => {
+    axios.defaults.headers.api = `123`;
+    axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+    return axios.post(endPoints.base + '/users/connect/accept', newUser);
+  });
+  const handleAccept = (connectionId) => {
+    const data = {
+      connectionId: connectionId,
+      accepted: true,
+    };
+    mutation1.mutate(data, {
+      onSuccess: () => {
+        refetch();
+      },
+    });
+  };
+
   const emailRef = useRef(null);
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
@@ -56,12 +76,6 @@ export default function Profile() {
   const availabiiltyRef = useRef(null);
   const bioRef = useRef(null);
   const specialtyRef = useRef(null);
-
-  function ConnectionList(user) {
-    const connections = user.connections;
-    const cards = connections.map((connection) => <ConnectCard key={connection.id} user={connection} />);
-    return { cards };
-  }
 
   async function updateProfile() {
     const data = {
@@ -124,16 +138,11 @@ export default function Profile() {
             </Group>
           </Modal>
 
-          <div className="border w-1/3 justify-center hidden md:flex lg:flex mt-10">
-          <div className="w-full flex">
-      <div className="hidden md:block md:w-1/3">
-        <Group></Group>
-      </div>
-      <ScrollArea style={{ height: '85vh' }} className="w-full md:w-2/3">
-      <Title>Connections</Title>
-        {connectData && connectData.map((item) => <ConnectCard key={item.id} user={item} />)}   
-      </ScrollArea>
-    </div>
+          <div className="md:ml-3 lg:w-1/4 w-full mt-10">
+            <div className="w-full flex flex-col justify-center items-center">
+              <Title>Connections</Title>
+              {userData.connections && userData.connections.filter((ele) => ele.Connection.accepted == true).map((item) => <ConnectCard isConnected={true} key={item.id} user={item} />)}
+            </div>
           </div>
 
           <div className="order-first lg:order-2 md:ml-3 md:w-5/6 w-full px-10 md:mx-10">
@@ -148,6 +157,12 @@ export default function Profile() {
                   Email:
                 </Title>
                 {userData?.user.email ?? ''}
+              </Text>
+              <Text className="flex justify-between">
+                <Title className="inline-block mr-2" order={4}>
+                  Username:
+                </Title>
+                {userData?.user.username ?? ''}
               </Text>
               <Text className="flex justify-between">
                 <Title className="inline-block mr-2" order={4}>
@@ -206,7 +221,7 @@ export default function Profile() {
                     .filter((ele) => {
                       return ele.Connection.accepted === false;
                     })
-                    .map((item) => <ConnectCard key={item.id} user={item} />)}
+                    .map((item) => <ConnectCard userId={userData.user.id} handleAccept={handleAccept} isConnected={false} key={item.id} user={item} />)}
               </div>
             </div>
           </div>
