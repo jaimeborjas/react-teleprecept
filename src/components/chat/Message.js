@@ -1,15 +1,16 @@
 import React from 'react';
 // import '../../css/chat.css';
 
-const Message = ({ message }) => {
+const Message = ({ message, receiverId, senderId }) => {
   // TODO ADD DATE and make the username Dynamic
   return (
-    <div className="relative flex flex-row w-full h-fit p-[16px]">
-      <img className="w-12 h-12 rounded-full cursor-pointer mt-7" src="https://ui-avatars.com/api/?name=Me" alt="/" />
-      <div className="flex flex-col justify-between pl-2 pt-5">
-        <p className="text-md m-0">{message}</p>
+    <div className="relative flex flex-col w-full h-fit pb-2">
+      <div className={`flex w-full ${receiverId === message.receiverId ? 'justify-end' : ''}`}>
+        <div className={`min-h-fit max-w-md p-3 rounded-t-xl ${receiverId === message.receiverId ? 'bg-sky-600 rounded-bl-xl' : 'bg-gray-300 rounded-br-xl'}`}>
+          <p className={`text-md m-0 ${receiverId === message.receiverId ? 'text-white' : ''}`}>{message.message}</p>
+        </div>
       </div>
-      <p className="absolute text-md m-0 top-3 right-5 p-2 -translate-y-2"></p>
+      {/* <p className="absolute text-md m-0 top-3 right-5 p-2 -translate-y-2"></p> */}
     </div>
   );
 };

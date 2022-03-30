@@ -60,6 +60,7 @@ export default function Messages() {
     setOpened(true);
     setSelectedChat(id);
   };
+  console.log(conversationQuery.data);
   return (
     <div className="grid place-items-center mx-5 md:mx-11 my-11">
       <div className="flex flex-row border-solid border-2 border-gray-200 rounded-lg w-full max-w-[1192px] h-[75vh] shadow-lg">
@@ -101,7 +102,7 @@ export default function Messages() {
               <Menu.Item>Report</Menu.Item>
             </Menu>
           </div>
-          <div className="overflow-hidden overflow-y-auto h-full">
+          <div className="overflow-auto overflow-y-auto h-full p-[18px]">
             {/* Message item components will be rendered here */}
             {conversationQuery.isIdle ? (
               <Text align="center" className="m-auto mt-10">
@@ -110,8 +111,11 @@ export default function Messages() {
             ) : (
               <div></div>
             )}
+            {/**user.user.id ==  */}
             {!conversationQuery.isIdle && conversationQuery.isLoading ? <Loader /> : <div></div>}
-            {conversationQuery.data && conversationQuery.data?.length > 0 && conversationQuery.data[0].messages.map((item) => <Message key={item.id} message={item.message} />)}
+            {conversationQuery.data &&
+              conversationQuery.data?.length > 0 &&
+              conversationQuery.data[0].messages.map((item) => <Message key={item.id} message={item} receiverId={selectedChat.connectionId} senderId={userId} />)}
             {conversationQuery.data && conversationQuery.data?.length == 0 && (
               <Text align="center" className="m-auto mt-10">
                 The Conversation is Empty
@@ -123,7 +127,7 @@ export default function Messages() {
             <form onSubmit={sendChat}>
               <div className="w-full border-solid border-0 border-t-2 border-gray-200 rounded-br-lg h-[100px]">
                 <div className="flex flex-row justify-between items-center h-full p-5 gap-4">
-                  <input placeholder="Enter a Message" className="border-0 outline-0 w-full h-full rounded-lg shadow-lg p-2" type="text" ref={textRef} />
+                  <input placeholder="Type your message..." className="border-0 outline-0 w-full h-full rounded-lg shadow-lg p-2" type="text" maxLength="100" ref={textRef} />
                   <button type="submit" className="border-0 outline-0 bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300 cursor-pointer">
                     <p className="text-lg p-2 m-0 text-white">Send</p>
                   </button>
