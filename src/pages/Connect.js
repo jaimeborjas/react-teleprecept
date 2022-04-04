@@ -102,7 +102,7 @@ const Connect = () => {
     return data;
   });
   const SpecialityPicker = () => {
-    const [data, setData] = useState(['JavaScript', 'React', 'Angular', 'Vue', 'Svelte']);
+    const [data, setData] = useState(['ADHD', 'Anger Issues', 'Anxiety', 'Autism Spectrum Disorder', 'Bipolar Disorder', 'Depression', 'EMDR', 'Family Caregiving Stress', 'Trauma', 'Insomnia', 'Medication Management', 'OCD', 'PTSD']);
   
     return (
       <MultiSelect
@@ -119,7 +119,7 @@ const Connect = () => {
   }
   
   const LocationPicker = () => {
-    const [data, setData] = useState(['JavaScript', 'React', 'Angular', 'Vue', 'Svelte']);
+    const [data, setData] = useState(['Alleghney', 'Armstrong', 'Beaver, Bedford', 'Blair', 'Butler', 'Cambria', 'Clarion', 'Clearfield', 'Crawford', 'Elk', 'Erie', 'Fayette', 'Forest', 'Greene', 'Indiana', 'Lawrence', 'Mckean', 'Somerset', 'Venango', 'Warren', 'Washington', 'Westmoreland']);
   
     return (
       <MultiSelect
@@ -136,7 +136,7 @@ const Connect = () => {
   }
   
   const AvailabilityPicker = () => {
-    const [data, setData] = useState(['Test', 'React', 'Angular', 'Vue', 'Svelte']);
+    const [data, setData] = useState(['In-person', 'Remote', 'Both']);
   
     return (
       <MultiSelect
