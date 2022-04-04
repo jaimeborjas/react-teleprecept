@@ -1,5 +1,6 @@
 import { Card, Avatar, Text, Divider, Title, Button, Checkbox, Modal, Group, TextInput, ScrollArea, Textarea, Select, Loader } from '@mantine/core';
 import axios from 'axios';
+import { func } from 'joi';
 import React, { useRef, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import endPoints from 'services/api';
@@ -25,6 +26,8 @@ const ConnectCard = ({ userId, user, handleAccept }) => {
 };
 export default function Profile() {
   const [opened, setOpened] = useState(false);
+  const [specVal, setSpecVal] = useState('');
+  const [newSpec, setNewSpec] = useState('');
   const options = {
     headers: {
       api: 123,
@@ -85,7 +88,7 @@ export default function Profile() {
         lastName: lastNameRef.current.value,
         location: locationRef.current.value,
         bio: bioRef.current.value,
-        specialty: specialtyRef.current.value,
+        specialty: specialtyRef.current.value == 'Other' ? newSpec : specialtyRef.current.value,
       },
     };
     mutation.mutate(data, {
@@ -100,14 +103,46 @@ export default function Profile() {
     setOpened(false);
   };
 
+  function test() {
+    if (specVal === 'Other') {
+      return (
+        <TextInput
+          placeholder="Your Specialty"
+          label="Please specify"
+          value={newSpec}
+          onChange={(event) => {
+            setNewSpec(event.currentTarget.value);
+          }}
+          required
+        />
+      );
+    }
+  }
+
   let specialtyOptions = [
-    { value: 'ADHD', label: 'ADHD' },
-    { value: 'PTSD', label: 'PTSD' },
-    { value: 'Substance Abuse', label: 'Substance Abuse' },
-    { value: 'Biopolar Disorder', label: 'Biopolar Disorder' },
-    { value: 'Stress', label: 'Stress' },
+    { value: 'Anger Issues', label: 'Anger Issues' },
     { value: 'Anxiety', label: 'Anxiety' },
+    { value: 'Attention Deficit Hyperactivity Disorder (ADHD)', label: 'Attention Deficit Hyperactivity Disorder (ADHD)' },
+    { value: 'Autism Spectrum Disorders', label: 'Autism Spectrum Disorders' },
+    { value: 'Biopolar Disorder', label: 'Biopolar Disorder' },
+    { value: 'Depression', label: 'Depression' },
+    { value: 'Eye Movement Desensitization and Reprocessing (EMDR)', label: 'Eye Movement Desensitization and Reprocessing (EMDR)' },
+    { value: 'Family Caregiving Stress', label: 'Family Caregiving Stress' },
+    { value: 'Gender Issues', label: 'Gender Issues' },
+    { value: 'Insomnia', label: 'Insomnia' },
+    { value: 'Job Stress', label: 'Job Stress' },
+    { value: 'Medication Management', label: 'Medication Management' },
+    { value: 'Obsessive Compulsive Disorder (OCD)', label: 'Obsessive Compulsive Disorder (OCD)' },
+    { value: 'Post Traumatic Stress Disorder (PTSD)', label: 'Post Traumatic Stress Disorder (PTSD)' },
+    { value: 'Psychosis and Schizophrenia Spectrum Disorders', label: 'Psychosis and Schizophrenia Spectrum Disorders' },
+    { value: 'Stress', label: 'Stress' },
+    { value: 'Substance Abuse', label: 'Substance Abuse' },
+    { value: 'Suicidal Thoughts', label: 'Suicidal Thoughts' },
+    { value: 'Therapy', label: 'Therapy' },
+    { value: 'Trauma', label: 'Trauma' },
+    { value: 'Other', label: 'Other' },
   ];
+  console.log(userData);
   if (isLoading)
     return (
       <div className="flex items-center justify-center">
@@ -120,7 +155,9 @@ export default function Profile() {
       {userData && (
         <div className="w-full max-h-fit mt-12 divide-x-2 flex flex-col lg:flex-row">
           <Modal opened={opened} onClose={() => setOpened(false)}>
-            <Title align="center">Update your Information</Title>
+            <Title align="center" className="text-2xl">
+              Update your Information
+            </Title>
             <ScrollArea className="mt-10" offsetScrollbars type="always" style={{ height: 300 }}>
               <TextInput ref={emailRef} type="email" defaultValue={userData.user.email ?? ''} placeholder="Email" label="Email" required />
               <Group>
@@ -128,7 +165,17 @@ export default function Profile() {
                 <TextInput ref={lastNameRef} placeholder="Last Name" defaultValue={userData.user.userInfo.lastName ?? ''} label="Last Name" required />
               </Group>
               <TextInput ref={locationRef} placeholder="Location" defaultValue={userData.user.userInfo.location ?? ''} label="Location" required />
-              <Select ref={specialtyRef} data={specialtyOptions} defaultValue={userData.user.userInfo.specialty ?? ''} placeholder="Specialty" label="Specialty" required />
+              <Select
+                ref={specialtyRef}
+                data={specialtyOptions}
+                defaultValue={userData.user.userInfo.specialty}
+                value={specVal}
+                onChange={setSpecVal}
+                placeholder="Specialty"
+                label="Specialty"
+                required
+              />
+              {test()}
               <Textarea ref={bioRef} placeholder="Biography" defaultValue={userData.user.userInfo.bio ?? ''} label="Biography" required />
             </ScrollArea>
             <Group sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -140,7 +187,7 @@ export default function Profile() {
 
           <div className="md:ml-3 lg:w-1/4 w-full mt-10">
             <div className="w-full flex flex-col justify-center items-center">
-              <Title>Connections</Title>
+              <Title className="text-2xl">Connections</Title>
               {userData.connections && userData.connections.filter((ele) => ele.Connection.accepted == true).map((item) => <ConnectCard isConnected={true} key={item.id} user={item} />)}
             </div>
           </div>
@@ -214,7 +261,7 @@ export default function Profile() {
           </div>
           <div className="md:ml-3 lg:w-1/4 w-full mt-10">
             <div className="w-full flex flex-col justify-center items-center">
-              <Title>Requests</Title>
+              <Title className="text-2xl">Requests</Title>
               <div>
                 {userData.connections &&
                   userData.connections

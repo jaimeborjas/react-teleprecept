@@ -24,3 +24,6 @@
   background-color: grey;
   clip-path: ellipse(186% 100% at 20.08% 0%);
 }
+.mission-text {
+  font-family: 'Poppins';
+}

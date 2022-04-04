@@ -27,7 +27,7 @@ const UserCard = ({ user }) => {
   if (isConnected)
     return (
       <Card className="w-full my-7 flex" shadow="md" padding="lg">
-        <Text>You have connected with {firstName + ' ' + lastName}</Text>
+        <Text>You have requested a connection with @{username}</Text>
       </Card>
     );
   return (
@@ -39,9 +39,10 @@ const UserCard = ({ user }) => {
       </div>
       <div className="flex absolute w-24 h-24 left-10 top-6 rounded-full bg-white">
         <div className="flex items-center justify-center m-auto text-center w-20 h-20 rounded-full bg-blue-500 text-white text-lg shadow-lg">
-          <p>DD</p>
+          <img className="w-14 h-14 rounded-full" src={`https://ui-avatars.com/api/?name=${username}&background=4A82EE&font-size=0.35&color=fff`} alt="/" />
         </div>
       </div>
+
       <p className="absolute top-11 left-36 hidden xs:block truncate">@{username}</p>
       <div className="h-1/2 bg-white">
         <div className="grid grid-flow-col gap-1 xs:gap-10 ml-8 mr-8">
