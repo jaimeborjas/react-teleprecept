@@ -1,9 +1,10 @@
-import { Card, Group, Loader, Text, Avatar, Divider, Button, Title, ScrollArea, ActionIcon } from '@mantine/core';
+import { MultiSelect, Card, Group, Loader, Text, Avatar, Divider, Button, Title, ScrollArea, ActionIcon } from '@mantine/core';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import endPoints from 'services/api';
 import { StarIcon, HomeIcon, ClockIcon, InfoCircledIcon, PlusCircledIcon } from '@modulz/radix-icons';
+
 
 const UserCard = ({ user }) => {
   const mutation = useMutation((newUser) => {
@@ -39,7 +40,7 @@ const UserCard = ({ user }) => {
       </div>
       <div className="flex absolute w-24 h-24 left-10 top-6 rounded-full bg-white">
         <div className="flex items-center justify-center m-auto text-center w-20 h-20 rounded-full bg-blue-500 text-white text-lg shadow-lg">
-          <p>DD</p>
+          <Avatar size={45} radius="xl" src={`https://ui-avatars.com/api/?name=${username}`} />
         </div>
       </div>
       <p className="absolute top-11 left-36 hidden xs:block truncate">@{username}</p>
@@ -100,7 +101,60 @@ const Connect = () => {
     const { data } = await axios.get(endPoints.base + '/users/available');
     return data;
   });
-
+  const SpecialityPicker = () => {
+    const [data, setData] = useState(['ADHD', 'Anger Issues', 'Anxiety', 'Autism Spectrum Disorder', 'Bipolar Disorder', 'Depression', 'EMDR', 'Family Caregiving Stress', 'Trauma', 'Insomnia', 'Medication Management', 'OCD', 'PTSD']);
+  
+    return (
+      <MultiSelect
+        label="Speciality"
+        placeholder="What speciality are you looking for?"
+        data={data}
+        searchable
+        creatable
+        getCreateLabel={(query) => `+ Create ${query}`}
+        onCreate={(query) => setData((current) => [...current, query])}
+        nothingFound="Nothing found..."
+      />
+    );
+  }
+  
+  const LocationPicker = () => {
+    const [data, setData] = useState(['Alleghney', 'Armstrong', 'Beaver, Bedford', 'Blair', 'Butler', 'Cambria', 'Clarion', 'Clearfield', 'Crawford', 'Elk', 'Erie', 'Fayette', 'Forest', 'Greene', 'Indiana', 'Lawrence', 'Mckean', 'Somerset', 'Venango', 'Warren', 'Washington', 'Westmoreland']);
+  
+    return (
+      <MultiSelect
+        label="Location"
+        placeholder="What place are you looking for?"
+        data={data}
+        searchable
+        creatable
+        getCreateLabel={(query) => `+ Create ${query}`}
+        onCreate={(query) => setData((current) => [...current, query])}
+        nothingFound="Nothing found..."
+      />
+    );
+  }
+  
+  const AvailabilityPicker = () => {
+    const [data, setData] = useState(['In-person', 'Remote', 'Both']);
+  
+    return (
+      <MultiSelect
+        label="Availability"
+        placeholder="What availability are you looking for?"
+        data={data}
+        searchable
+        creatable
+        getCreateLabel={(query) => `+ Create ${query}`}
+        onCreate={(query) => setData((current) => [...current, query])}
+        nothingFound="Nothing found..."
+      />
+    );
+  }
+  
+  function filterSearch (event){
+    
+  }
   if (isLoading)
     return (
       <div className="flex items-center justify-center">
@@ -108,13 +162,22 @@ const Connect = () => {
       </div>
     );
   return (
-    <div className="w-full flex justify-center">
-      {/* <div className="hidden md:block md:w-1/3">
+    <div className="w-full flex justify-left">
+      <div className="hidden md:block md:w-1/3">
         <Group className="p-10">
           <Title order={4}>Filters</Title>
         </Group>
-        <Group></Group>
-      </div> */}
+        <form onSubmit={filterSearch}>
+          <Group className="p-10">
+            <SpecialityPicker></SpecialityPicker>
+            <LocationPicker></LocationPicker>
+            <AvailabilityPicker></AvailabilityPicker>
+            <button type="submit" className="border-0 outline-0 bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300 cursor-pointer">
+              <p className="text-lg p-2 m-0 text-white">Filter</p>
+            </button>
+          </Group>
+        </form>
+      </div> 
       <div>
         <Title className="my-5" align="center">
           Connect with others:
