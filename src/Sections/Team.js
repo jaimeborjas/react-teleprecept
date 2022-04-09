@@ -9,7 +9,7 @@ const Team = () => {
       <div className="mt-6">
         <Title className="text-3xl title about">Meet Our Team</Title>
       </div>
-      <div className="flex mt-12 flex-row items-center">
+      <div className="flex mt-12 flex-col sm:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row items-center">
         <div className="basis-1/3">
           <div className="flex justify-center">
             <Image src={smith} radius="md" className="w-48" />

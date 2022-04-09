@@ -38,7 +38,7 @@ function Intro() {
         </div>
 
         <div className="w-2/3 flex justify-center">
-          <Image className="nurse-image" src={nurse} alt="nurse" />
+          <Image className="nurse-image w-0 sm:w-3/4 md:w-2/3 lg:w-3/4 xl:w-4/5 2xl:w-full" src={nurse} alt="nurse" />
         </div>
       </div>
     </div>

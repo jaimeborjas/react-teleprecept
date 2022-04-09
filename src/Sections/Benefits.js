@@ -14,46 +14,46 @@ function Benefits() {
       <div className="mt-6">
         <Title className="text-3xl title about">Benefits</Title>
       </div>
-      <div className="justify-center flex item-center mt-6">
+      <div className="justify-center sm:flexflex  item-center mt-6 ">
         <Tabs grow position="center">
-          <Tabs.Tab className="title text-lg" label="Students">
-            <div className="flex w-full px-20 text-center">
-              <div className="w-1/4 flex flex-col justify-center items-center p-10">
-                <img src={money} width="75px" alt="logo" />
-                <Text className="text text-lg text-center">Affordable Student-Preceptor Matching Service</Text>
+          <Tabs.Tab className="title text-sm ml-50" label="Students">
+            <div className="flex w-full px-30 text-center">
+              <div className="w-1/4 flex flex-col justify-center items-center p-10 space-x-3 pt-100 ">
+                <img src={money} width="w-16" alt="logo" />
+                <Text className="pt-10 text-sm sm:text-md md:text-lg lg:text-lg xl:text-lg 2xl:text-lg  text-center ">Affordable Student-Preceptor Matching Service</Text>
               </div>
-              <div className="w-1/4 flex flex-col justify-center items-center p-10">
+              <div className="w-1/4 flex flex-col justify-center items-center p-10 space-x-3">
                 <img src={computer} width="75px" alt="logo" />
-                <Text className="text text-lg text-center">Complete Preceptorship Virtually or In-Person</Text>
+                <Text className="pt-10 text-sm sm:text-md md:text-lg lg:text-lg xl:text-lg 2xl:text-lg  text-center">Complete Preceptorship Virtually or In-Person</Text>
               </div>
-              <div className="w-1/4 flex flex-col justify-center items-center p-10">
+              <div className="w-1/4 flex flex-col justify-center items-center p-10 space-x-3">
                 <img src={certificate} width="75px" alt="logo" />
-                <Text className="text text-lg text-center">Certification of Completion Awarded</Text>
+                <Text className="pt-10 text-sm sm:text-md md:text-lg lg:text-lg xl:text-lg 2xl:text-lg  text-center">Certification of Completion Awarded</Text>
               </div>
-              <div className="w-1/4 flex flex-col justify-center items-center p-10">
+              <div className="w-1/4 flex flex-col justify-center items-center p-10 space-x-3">
                 <img src={secure} width="75px" alt="logo" />
-                <Text className="text text-lg text-center">HIPAA, GDPR and PHIPA/PIPEDA Compliant </Text>
+                <Text className="pt-10 text-sm sm:text-md md:text-lg lg:text-lg xl:text-lg 2xl:text-lg  text-center">HIPAA, GDPR and PHIPA/PIPEDA Compliant </Text>
               </div>
             </div>
           </Tabs.Tab>
 
           <Tabs.Tab className="title text-lg" label="Preceptors">
-            <div className="flex w-full px-20 text-center">
+            <div className="flex w-full px-30 text-center">
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
                 <img src={money} width="75px" alt="logo" />
-                <p className=" px-10">Monetary Compensation</p>
+                <p className=" px-10 text-sm sm:text-md md:text-lg lg:text-lg xl:text-lg 2xl:text-lg ">Monetary Compensation</p>
               </div>
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
                 <img src={book} width="75px" alt="logo" />
-                <p>Access to Campus Library</p>
+                <p className=" px-10 text-sm sm:text-md md:text-lg lg:text-lg xl:text-lg 2xl:text-lg ">Access to Campus Library</p>
               </div>
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
                 <img src={clock} width="75px" alt="logo" />
-                <p>Preceptor Hours Credited </p>
+                <p className=" px-10 text-sm sm:text-md md:text-lg lg:text-lg xl:text-lg 2xl:text-lg ">Preceptor Hours Credited</p>
               </div>
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
                 <img src={secure} width="75px" alt="logo" />
-                <p>HIPAA, GDPR and PHIPA/PIPEDA Compliant </p>
+                <p className=" px-10 text-sm sm:text-md md:text-lg lg:text-lg xl:text-lg 2xl:text-lg ">HIPAA, GDPR and PHIPA/PIPEDA Compliant</p>
               </div>
             </div>
           </Tabs.Tab>
