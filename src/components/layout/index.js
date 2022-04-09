@@ -58,7 +58,6 @@ export default function Layout({ children }) {
   const auth = useAuth();
   const { notification } = useNotifications();
   const [navigation, setNavigation] = useState([]);
-  console.log('notification ' + notification);
   useEffect(() => {
     if (!auth.user) {
       setNavigation([

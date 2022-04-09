@@ -1,10 +1,9 @@
-import { MultiSelect, Card, Group, Loader, Text, Avatar, Divider, Button, Title, ScrollArea, ActionIcon } from '@mantine/core';
+import { MultiSelect, Card, Group, Loader, Text, Avatar, Title } from '@mantine/core';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import endPoints from 'services/api';
 import { StarIcon, HomeIcon, ClockIcon, InfoCircledIcon, PlusCircledIcon } from '@modulz/radix-icons';
-
 
 const UserCard = ({ user }) => {
   const mutation = useMutation((newUser) => {
@@ -13,8 +12,8 @@ const UserCard = ({ user }) => {
     return axios.post(endPoints.base + '/users/connect', newUser);
   });
   const [isConnected, setIsConnected] = useState(false);
-  const { id, username, role } = user;
-  const { firstName, lastName, specialty, bio, location } = user.userInfo;
+  const { id, username } = user;
+  const { specialty, bio, location } = user.userInfo;
   const handleConnect = () => {
     const data = {
       connectionId: id,
@@ -103,8 +102,22 @@ const Connect = () => {
     return data;
   });
   const SpecialityPicker = () => {
-    const [data, setData] = useState(['ADHD', 'Anger Issues', 'Anxiety', 'Autism Spectrum Disorder', 'Bipolar Disorder', 'Depression', 'EMDR', 'Family Caregiving Stress', 'Trauma', 'Insomnia', 'Medication Management', 'OCD', 'PTSD']);
-  
+    const [data, setData] = useState([
+      'ADHD',
+      'Anger Issues',
+      'Anxiety',
+      'Autism Spectrum Disorder',
+      'Bipolar Disorder',
+      'Depression',
+      'EMDR',
+      'Family Caregiving Stress',
+      'Trauma',
+      'Insomnia',
+      'Medication Management',
+      'OCD',
+      'PTSD',
+    ]);
+
     return (
       <MultiSelect
         label="Speciality"
@@ -117,11 +130,34 @@ const Connect = () => {
         nothingFound="Nothing found..."
       />
     );
-  }
-  
+  };
+
   const LocationPicker = () => {
-    const [data, setData] = useState(['Alleghney', 'Armstrong', 'Beaver, Bedford', 'Blair', 'Butler', 'Cambria', 'Clarion', 'Clearfield', 'Crawford', 'Elk', 'Erie', 'Fayette', 'Forest', 'Greene', 'Indiana', 'Lawrence', 'Mckean', 'Somerset', 'Venango', 'Warren', 'Washington', 'Westmoreland']);
-  
+    const [data, setData] = useState([
+      'Alleghney',
+      'Armstrong',
+      'Beaver, Bedford',
+      'Blair',
+      'Butler',
+      'Cambria',
+      'Clarion',
+      'Clearfield',
+      'Crawford',
+      'Elk',
+      'Erie',
+      'Fayette',
+      'Forest',
+      'Greene',
+      'Indiana',
+      'Lawrence',
+      'Mckean',
+      'Somerset',
+      'Venango',
+      'Warren',
+      'Washington',
+      'Westmoreland',
+    ]);
+
     return (
       <MultiSelect
         label="Location"
@@ -134,11 +170,11 @@ const Connect = () => {
         nothingFound="Nothing found..."
       />
     );
-  }
-  
+  };
+
   const AvailabilityPicker = () => {
     const [data, setData] = useState(['In-person', 'Remote', 'Both']);
-  
+
     return (
       <MultiSelect
         label="Availability"
@@ -151,11 +187,9 @@ const Connect = () => {
         nothingFound="Nothing found..."
       />
     );
-  }
-  
-  function filterSearch (event){
-    
-  }
+  };
+
+  function filterSearch(event) {}
   if (isLoading)
     return (
       <div className="flex items-center justify-center">
@@ -178,7 +212,7 @@ const Connect = () => {
             </button>
           </Group>
         </form>
-      </div> 
+      </div>
       <div>
         <Title className="my-5" align="center">
           Connect with others:
