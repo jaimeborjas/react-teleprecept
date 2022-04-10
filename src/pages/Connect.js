@@ -1,4 +1,4 @@
-import { MultiSelect, Card, Group, Loader, Text, Avatar, Divider, Button, Title, ScrollArea, ActionIcon } from '@mantine/core';
+import { MultiSelect, Card, Group, Loader, Text, Avatar, Title } from '@mantine/core';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
@@ -13,8 +13,8 @@ const UserCard = ({ user }) => {
     return axios.post(endPoints.base + '/users/connect', newUser);
   });
   const [isConnected, setIsConnected] = useState(false);
-  const { id, username, role } = user;
-  const { firstName, lastName, specialty, bio, location } = user.userInfo;
+  const { id, username } = user;
+  const { specialty, bio, location } = user.userInfo;
   const handleConnect = () => {
     const data = {
       connectionId: id,
@@ -28,7 +28,7 @@ const UserCard = ({ user }) => {
   if (isConnected)
     return (
       <Card className="w-full my-7 flex" shadow="md" padding="lg">
-        <Text>You have connected with {firstName + ' ' + lastName}</Text>
+        <Text>You have requested a connection with @{username}</Text>
       </Card>
     );
   return (
@@ -43,6 +43,7 @@ const UserCard = ({ user }) => {
           <Avatar size={45} radius="xl" src={`https://ui-avatars.com/api/?name=${username}`} />
         </div>
       </div>
+
       <p className="absolute top-11 left-36 hidden xs:block truncate">@{username}</p>
       <div className="h-1/2 bg-white">
         <div className="grid grid-flow-col gap-1 xs:gap-10 ml-8 mr-8">
@@ -102,8 +103,22 @@ const Connect = () => {
     return data;
   });
   const SpecialityPicker = () => {
-    const [data, setData] = useState(['ADHD', 'Anger Issues', 'Anxiety', 'Autism Spectrum Disorder', 'Bipolar Disorder', 'Depression', 'EMDR', 'Family Caregiving Stress', 'Trauma', 'Insomnia', 'Medication Management', 'OCD', 'PTSD']);
-  
+    const [data, setData] = useState([
+      'ADHD',
+      'Anger Issues',
+      'Anxiety',
+      'Autism Spectrum Disorder',
+      'Bipolar Disorder',
+      'Depression',
+      'EMDR',
+      'Family Caregiving Stress',
+      'Trauma',
+      'Insomnia',
+      'Medication Management',
+      'OCD',
+      'PTSD',
+    ]);
+
     return (
       <MultiSelect
         label="Speciality"
@@ -116,11 +131,34 @@ const Connect = () => {
         nothingFound="Nothing found..."
       />
     );
-  }
-  
+  };
+
   const LocationPicker = () => {
-    const [data, setData] = useState(['Alleghney', 'Armstrong', 'Beaver, Bedford', 'Blair', 'Butler', 'Cambria', 'Clarion', 'Clearfield', 'Crawford', 'Elk', 'Erie', 'Fayette', 'Forest', 'Greene', 'Indiana', 'Lawrence', 'Mckean', 'Somerset', 'Venango', 'Warren', 'Washington', 'Westmoreland']);
-  
+    const [data, setData] = useState([
+      'Alleghney',
+      'Armstrong',
+      'Beaver, Bedford',
+      'Blair',
+      'Butler',
+      'Cambria',
+      'Clarion',
+      'Clearfield',
+      'Crawford',
+      'Elk',
+      'Erie',
+      'Fayette',
+      'Forest',
+      'Greene',
+      'Indiana',
+      'Lawrence',
+      'Mckean',
+      'Somerset',
+      'Venango',
+      'Warren',
+      'Washington',
+      'Westmoreland',
+    ]);
+
     return (
       <MultiSelect
         label="Location"
@@ -133,11 +171,11 @@ const Connect = () => {
         nothingFound="Nothing found..."
       />
     );
-  }
-  
+  };
+
   const AvailabilityPicker = () => {
     const [data, setData] = useState(['In-person', 'Remote', 'Both']);
-  
+
     return (
       <MultiSelect
         label="Availability"
@@ -150,11 +188,9 @@ const Connect = () => {
         nothingFound="Nothing found..."
       />
     );
-  }
-  
-  function filterSearch (event){
-    
-  }
+  };
+
+  function filterSearch(event) {}
   if (isLoading)
     return (
       <div className="flex items-center justify-center">
@@ -177,7 +213,7 @@ const Connect = () => {
             </button>
           </Group>
         </form>
-      </div> 
+      </div>
       <div>
         <Title className="my-5" align="center">
           Connect with others:

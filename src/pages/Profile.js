@@ -7,7 +7,7 @@ import endPoints from 'services/api';
 const ConnectCard = ({ userId, user, handleAccept }) => {
   const { accepted, id: connectionId, userId: requestId } = user.Connection;
   const { role, username } = user;
-  const { firstName, lastName, bio, location } = user.userInfo;
+  const { firstName, lastName } = user.userInfo;
   return (
     <>
       <Card className="w-full flex my-4" shadow="sm" padding="lg">
@@ -25,12 +25,6 @@ const ConnectCard = ({ userId, user, handleAccept }) => {
 };
 export default function Profile() {
   const [opened, setOpened] = useState(false);
-  const options = {
-    headers: {
-      api: 123,
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  };
 
   const {
     isLoading,
@@ -71,9 +65,7 @@ export default function Profile() {
   const emailRef = useRef(null);
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
-  const usernameRef = useRef(null);
   const locationRef = useRef(null);
-  const availabiiltyRef = useRef(null);
   const bioRef = useRef(null);
   const specialtyRef = useRef(null);
 
@@ -141,7 +133,7 @@ export default function Profile() {
           <div className="md:ml-3 lg:w-1/4 w-full mt-10">
             <div className="w-full flex flex-col justify-center items-center">
               <Title>Connections</Title>
-              {userData.connections && userData.connections.filter((ele) => ele.Connection.accepted == true).map((item) => <ConnectCard isConnected={true} key={item.id} user={item} />)}
+              {userData.connections && userData.connections.filter((ele) => ele.Connection.accepted === true).map((item) => <ConnectCard isConnected={true} key={item.id} user={item} />)}
             </div>
           </div>
 
