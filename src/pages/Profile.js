@@ -35,7 +35,7 @@ const ConnectCard = ({ userId, user, handleAccept }) => {
     <>
       <Card className="w-full flex my-4" shadow="sm" padding="lg">
         <Group className="w-20 mr-5">
-          <Avatar size={45} radius="xl" src={`https://ui-avatars.com/api/?name=${firstName} ${lastName}`} />
+          <Avatar size={45} radius="xl" src={`https://ui-avatars.com/api/?name=${username}`} />
         </Group>
         <Group className="w-2/3 flex flex-col items-start">
           <Text>{`${username}`}</Text>
@@ -51,6 +51,8 @@ const ConnectCard = ({ userId, user, handleAccept }) => {
 };
 export default function Profile() {
   const [opened, setOpened] = useState(false);
+  const [specVal, setSpecVal] = useState('');
+  const [newSpec, setNewSpec] = useState('');
 
   const {
     isLoading,
@@ -103,7 +105,7 @@ export default function Profile() {
         lastName: lastNameRef.current.value,
         location: locationRef.current.value,
         bio: bioRef.current.value,
-        specialty: specialtyRef.current.value,
+        specialty: specialtyRef.current.value === 'Other' ? newSpec : specialtyRef.current.value,
       },
     };
     mutation.mutate(data, {
@@ -118,13 +120,44 @@ export default function Profile() {
     setOpened(false);
   };
 
+  const customSpec = () => {
+    if (specVal === 'Other') {
+      return (
+        <TextInput
+          placeholder="Your Specialty"
+          label="Please Specify"
+          value={newSpec}
+          onChange={(event) => {
+            setNewSpec(event.currentTarget.value);
+          }}
+          required
+        />
+      );
+    }
+  };
+
   let specialtyOptions = [
-    { value: 'ADHD', label: 'ADHD' },
-    { value: 'PTSD', label: 'PTSD' },
-    { value: 'Substance Abuse', label: 'Substance Abuse' },
-    { value: 'Biopolar Disorder', label: 'Biopolar Disorder' },
-    { value: 'Stress', label: 'Stress' },
+    { value: 'Attention Deficit Hyperactivity Disorder (ADHD)', label: 'Attention Deficit Hyperactivity Disorder (ADHD)' },
+    { value: 'Anger Issues', label: 'Anger Issues' },
     { value: 'Anxiety', label: 'Anxiety' },
+    { value: 'Autism Spectrum Disorders', label: 'Autism Spectrum Disorders' },
+    { value: 'Bipolar Disorder', label: 'Bipolar Disorder' },
+    { value: 'Depression', label: 'Depression' },
+    { value: 'Eye Movement Desensitization and Reprocessing (EMDR)', label: 'Eye Movement Desensitization and Reprocessing (EMDR)' },
+    { value: 'Family Caregiving Stress', label: 'Family Caregiving Stress' },
+    { value: 'Gender Issues', label: 'Gender Issues' },
+    { value: 'Insomnia', label: 'Insomnia' },
+    { value: 'Job Stress', label: 'Job Stress' },
+    { value: 'Medication Management', label: 'Medication Management' },
+    { value: 'Obsessive Compulsive Disorder (OCD)', label: 'Obsessive Compulsive Disorder (OCD)' },
+    { value: 'Post Traumatic Stress Disorder (PTSD)', label: 'Post Traumatic Stress Disorder (PTSD)' },
+    { value: 'Psychosis and Schizophrenia Spectrum Disorders', label: 'Psychosis and Schizophrenia Spectrum Disorders' },
+    { value: 'Stress', label: 'Stress' },
+    { value: 'Substance Abuse', label: 'Substance Abuse' },
+    { value: 'Suicidal Thoughts', label: 'Suicidal Thoughts' },
+    { value: 'Therapy', label: 'Therapy' },
+    { value: 'Trauma', label: 'Trauma' },
+    { value: 'Other', label: 'Other' },
   ];
   if (isLoading)
     return (
@@ -138,15 +171,27 @@ export default function Profile() {
       {userData && (
         <div className="w-full max-h-fit mt-12 divide-x-2 flex flex-col md:flex-row">
           <Modal opened={opened} onClose={() => setOpened(false)}>
-            <Title align="center">Update your Information</Title>
+            <Title align="center" className="text-2xl">
+              Update Your Information
+            </Title>
             <ScrollArea className="mt-10" offsetScrollbars type="always" style={{ height: 300 }}>
-              <TextInput ref={emailRef} type="email" defaultValue={userData.user.email ?? ''} placeholder="Email" label="Email" required />
+              <TextInput ref={emailRef} type="email" defaultValue={userData.user.email ?? ''} placeholder="Email" label="Email" disabled />
               <Group>
-                <TextInput ref={firstNameRef} placeholder="First Name" defaultValue={userData.user.userInfo.firstName ?? ''} label="First Name" required />
-                <TextInput ref={lastNameRef} placeholder="Last Name" defaultValue={userData.user.userInfo.lastName ?? ''} label="Last Name" required />
+                <TextInput ref={firstNameRef} placeholder="First Name" defaultValue={userData.user.userInfo.firstName ?? ''} label="First Name" disabled />
+                <TextInput ref={lastNameRef} placeholder="Last Name" defaultValue={userData.user.userInfo.lastName ?? ''} label="Last Name" disabled />
               </Group>
               <TextInput ref={locationRef} placeholder="Location" defaultValue={userData.user.userInfo.location ?? ''} label="Location" required />
-              <Select ref={specialtyRef} data={specialtyOptions} defaultValue={userData.user.userInfo.specialty ?? ''} placeholder="Specialty" label="Specialty" required />
+              <Select
+                ref={specialtyRef}
+                data={specialtyOptions}
+                defaultValue={userData.user.userInfo.specialty ?? ''}
+                value={specVal}
+                onChange={setSpecVal}
+                placeholder="Specialty"
+                label="Specialty"
+                required
+              />
+              {customSpec()}
               <Textarea ref={bioRef} placeholder="Biography" defaultValue={userData.user.userInfo.bio ?? ''} label="Biography" required />
             </ScrollArea>
             <Group sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -158,7 +203,7 @@ export default function Profile() {
 
           <div className="md:ml-3 md:w-1/3 lg:w-1/6 w-full">
             <div className="w-full flex flex-col justify-center items-center">
-              <Title>Connections</Title>
+              <Title className="text-2xl">Connections</Title>
               {userData.connections && userData.connections.filter((ele) => ele.Connection.accepted === true).lenght === 0
                 ? "you don't have any connections"
                 : userData.connections.filter((ele) => ele.Connection.accepted === true).map((item) => <ConnectCard isConnected={true} key={item.id} user={item} />)}
@@ -234,7 +279,7 @@ export default function Profile() {
           </div>
           <div className="md:w-1/3 lg:w-1/6 w-full ml-5">
             <div className="w-full flex flex-col justify-center items-center">
-              <Title className="mb-5">Requests</Title>
+              <Title className="text-2xl">Requests</Title>
               {userData.connections && userData.connections.filter((ele) => ele.Connection.accepted === false).length === 0 ? (
                 <Text>You don't have any requests</Text>
               ) : (

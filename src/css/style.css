@@ -1,4 +1,3 @@
-
 .about,
 .review {
   text-align: center;
@@ -13,10 +12,13 @@
 .text-span {
   margin-left: 10px;
 }
+.title {
+  font-family: 'Poppins';
+}
 .nurse-image {
-  max-width: 400.4px;
-  max-height: 366px;
-  height: auto;
+  max-width: 500.4px;
+  max-height: 396px;
+  /* height: auto; */
 }
 .div-team {
   display: block;

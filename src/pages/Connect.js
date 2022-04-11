@@ -1,4 +1,4 @@
-import { MultiSelect, Card, Group, Loader, Text, Avatar, Title } from '@mantine/core';
+import { MultiSelect, Card, Grid, Loader, Text, Avatar, Title } from '@mantine/core';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
@@ -34,7 +34,7 @@ const UserCard = ({ user }) => {
   return (
     <div className="relative mb-10 shadow-lg md:m-5 w-96 hover:scale-[1.01] transition ease-in-out delay-150 rounded-md">
       <div className="flex justify-end h-14 bg-blue-500  mb-12 rounded-md">
-        <span className="drop-shadow-lg ">
+        <span className="drop-shadow-lg">
           <EnterIcon onClick={ViewUser} className="scale-[2] m-5 drop-shadow-lg hover:scale-[2.3] transition ease-in-out cursor-pointer delay-150" color="white" size="50" />
         </span>
         <span className="drop-shadow-lg ">
@@ -43,7 +43,7 @@ const UserCard = ({ user }) => {
       </div>
       <div className="flex absolute w-24 h-24 left-10 top-6 rounded-full bg-white">
         <div className="flex items-center justify-center m-auto text-center w-20 h-20 rounded-full bg-blue-500 text-white text-lg shadow-lg">
-          <Avatar size={45} radius="xl" src={`https://ui-avatars.com/api/?name=${username}`} />
+          <Avatar size={45} radius="xl" src={`https://ui-avatars.com/api/?name=${username}&font-size=0.45&background=4A82EE&color=fff`} />
         </div>
       </div>
 
@@ -203,18 +203,26 @@ const Connect = () => {
   return (
     <div className="w-full p-12 flex justify-left">
       <div className="hidden md:block md:w-1/3">
-        <Group className="p-10">
+        <div className="p-10">
           <Title order={2}>Filters</Title>
-        </Group>
+        </div>
         <form onSubmit={filterSearch}>
-          <Group className="p-10">
-            <SpecialityPicker></SpecialityPicker>
-            <LocationPicker></LocationPicker>
-            <AvailabilityPicker></AvailabilityPicker>
-            <button type="submit" className="border-0 outline-0 bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300 cursor-pointer">
-              <p className="text-lg p-2 m-0 text-white">Filter</p>
-            </button>
-          </Group>
+          <Grid className="p-10">
+            <Grid.Col span={12}>
+              <SpecialityPicker />
+            </Grid.Col>
+            <Grid.Col span={12}>
+              <LocationPicker />
+            </Grid.Col>
+            <Grid.Col span={12}>
+              <AvailabilityPicker />
+            </Grid.Col>
+            <Grid.Col span={12}>
+              <button type="submit" className="border-0 outline-0 bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300 cursor-pointer">
+                <p className="text-lg p-2 m-0 text-white">Filter</p>
+              </button>
+            </Grid.Col>
+          </Grid>
         </form>
       </div>
       <div className="w-full md:w-2/3">

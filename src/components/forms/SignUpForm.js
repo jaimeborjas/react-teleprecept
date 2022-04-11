@@ -12,6 +12,8 @@ import axios from 'axios';
 
 export default function SignUpForm() {
   const [active, setActive] = useState(0);
+  const [specVal, setSpecVal] = useState('');
+  const [newSpec, setNewSpec] = useState('');
   const navigate = useNavigate();
 
   const nextStep = () => {
@@ -39,13 +41,45 @@ export default function SignUpForm() {
     specialty: Joi.any(),
     bio: Joi.any(),
   });
+
+  const customSpec = () => {
+    if (specVal === 'Other') {
+      return (
+        <TextInput
+          placeholder="Your Specialty"
+          label="Please Specify"
+          value={newSpec}
+          onChange={(event) => {
+            setNewSpec(event.currentTarget.value);
+          }}
+          required
+        />
+      );
+    }
+  };
+
   let specialtyOptions = [
-    { value: 'ADHD', label: 'ADHD' },
-    { value: 'PTSD', label: 'PTSD' },
-    { value: 'Substance Abuse', label: 'Substance Abuse' },
-    { value: 'Biopolar Disorder', label: 'Biopolar Disorder' },
-    { value: 'Stress', label: 'Stress' },
+    { value: 'Attention Deficit Hyperactivity Disorder (ADHD)', label: 'Attention Deficit Hyperactivity Disorder (ADHD)' },
+    { value: 'Anger Issues', label: 'Anger Issues' },
     { value: 'Anxiety', label: 'Anxiety' },
+    { value: 'Autism Spectrum Disorders', label: 'Autism Spectrum Disorders' },
+    { value: 'Bipolar Disorder', label: 'Bipolar Disorder' },
+    { value: 'Depression', label: 'Depression' },
+    { value: 'Eye Movement Desensitization and Reprocessing (EMDR)', label: 'Eye Movement Desensitization and Reprocessing (EMDR)' },
+    { value: 'Family Caregiving Stress', label: 'Family Caregiving Stress' },
+    { value: 'Gender Issues', label: 'Gender Issues' },
+    { value: 'Insomnia', label: 'Insomnia' },
+    { value: 'Job Stress', label: 'Job Stress' },
+    { value: 'Medication Management', label: 'Medication Management' },
+    { value: 'Obsessive Compulsive Disorder (OCD)', label: 'Obsessive Compulsive Disorder (OCD)' },
+    { value: 'Post Traumatic Stress Disorder (PTSD)', label: 'Post Traumatic Stress Disorder (PTSD)' },
+    { value: 'Psychosis and Schizophrenia Spectrum Disorders', label: 'Psychosis and Schizophrenia Spectrum Disorders' },
+    { value: 'Stress', label: 'Stress' },
+    { value: 'Substance Abuse', label: 'Substance Abuse' },
+    { value: 'Suicidal Thoughts', label: 'Suicidal Thoughts' },
+    { value: 'Therapy', label: 'Therapy' },
+    { value: 'Trauma', label: 'Trauma' },
+    { value: 'Other', label: 'Other' },
   ];
   const form = useForm({
     initialValues: {
@@ -75,10 +109,11 @@ export default function SignUpForm() {
         firstName: values.firstName,
         lastName: values.lastName,
         location: values.location,
-        specialty: values.specialty,
+        specialty: values.specialty == '' ? newSpec : values.specialty,
         bio: values.bio,
       },
     };
+    console.log(newSpec);
     await mutation.mutate(data, {
       onSuccess: () => {
         auth.signIn(values.email, values.password).then(() => {
@@ -129,7 +164,8 @@ export default function SignUpForm() {
           </Stepper.Step>
           <Stepper.Step label="Second step" description="Profile Information">
             <TextInput {...form.getInputProps('location')} placeholder="Location" label="Location" required />
-            <Select {...form.getInputProps('specialty')} data={specialtyOptions} placeholder="Specialty" label="Specialty" required />
+            <Select {...form.getInputProps('specialty')} data={specialtyOptions} value={specVal} onChange={setSpecVal} placeholder="Specialty" label="Specialty" required />
+            {customSpec()}
             <Textarea {...form.getInputProps('bio')} placeholder="Biography" label="Biography" required />
           </Stepper.Step>
         </Stepper>

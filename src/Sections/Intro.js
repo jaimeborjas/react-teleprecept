@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Title, Text, Divider, Button, Grid } from '@mantine/core';
-import nurse from '../img/nurse1.png';
+import nurse from '../img/guynurse.png';
 import { PlayButton } from '../img/AllSvg';
 import '../css/style.css';
 import { Link } from 'react-router-dom';
@@ -38,7 +38,7 @@ function Intro() {
         </div>
 
         <div className="w-2/3 flex justify-center">
-          <Image className="nurse-image w-0 sm:w-3/4 md:w-2/3 lg:w-3/4 xl:w-4/5 2xl:w-full" src={nurse} alt="nurse" />
+          <Image className="nurse-image sm:w-3/4 md:w-2/3 lg:w-3/4 xl:w-4/5 2xl:w-full pt-20" src={nurse} alt="nurse" />
         </div>
       </div>
     </div>
