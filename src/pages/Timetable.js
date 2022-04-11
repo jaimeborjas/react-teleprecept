@@ -1,10 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { createStyles, Table, Checkbox, ScrollArea, Group, Avatar, Text, Button, TextInput } from '@mantine/core';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useParams } from 'react-query';
 import axios from 'axios';
 import endPoints from 'services/api';
+import { CounterClockwiseClockIcon } from '@modulz/radix-icons';
 
 const Timetable = () => {
+  const { id } = useParams();
   const useStyles = createStyles((theme) => ({
       rowSelected: {
         backgroundColor:
@@ -91,26 +93,34 @@ const Timetable = () => {
     } = useQuery('timesheet', async () => {
       axios.defaults.headers.api = `123`;
       axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-      const { data } = await axios.get(endPoints.base + '/timesheet');
+      const { data } = await axios.get(endPoints.base + `/timesheet/${id}`);
       return data;
     });
+    console.log(timetable)
 
-   /* const submitHanlder = async (event) => {
+    const submitHandler = async (event) => {
       event.preventDefault();
       logPost();
     };
 
+    const mutation = useMutation((log) => {
+      axios.defaults.headers.api = `123`;
+      axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+      return axios.patch(endPoints.base + `/timesheet/${id}`, log);
+    });
+
     async function logPost () {
       const data = {
           hours: hoursRef.current.value,
-          date: dateRef.current.value
+          date: dateRef.current.value,
+          validated: false
       };
       mutation.mutate(data, {
         onSuccess: () => {
           refetch();
         },
       });
-    };*/
+    };
     return (
     <div className="w-full flex justify-left">
       <div className="hidden md:block md:w-2/3">
@@ -128,7 +138,7 @@ const Timetable = () => {
             label="Full name"
             required
           />
-          <Button type="submit">
+          <Button type="submit" onClick={submitHandler}>
             Submit
           </Button>
         </form>
