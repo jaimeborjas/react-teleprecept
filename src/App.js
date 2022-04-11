@@ -11,6 +11,7 @@ import Login from 'pages/Login';
 import SignUp from 'pages/Signup';
 import Profile from 'pages/Profile';
 import Connect from 'pages/Connect';
+import Timetable from 'pages/Timetable';
 import { RecoverPassword } from 'components/forms/RecoverPassword';
 import { ChangePassword } from 'components/forms/ChangePassword';
 
@@ -55,6 +56,7 @@ export default function App() {
                       </RequireAuth>
                     }
                   ></Route>
+                  <Route path="/timetable" element={<Timetable />}></Route>
                   <Route path="/login" element={<Login />}></Route>
                   <Route path="/signup" element={<SignUp />}></Route>
                   <Route path="/recover" element={<RecoverPassword />}></Route>
