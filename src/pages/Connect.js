@@ -3,7 +3,8 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import endPoints from 'services/api';
-import { StarIcon, HomeIcon, ClockIcon, InfoCircledIcon, PlusCircledIcon } from '@modulz/radix-icons';
+import { StarIcon, HomeIcon, ClockIcon, InfoCircledIcon, PlusCircledIcon, EnterIcon } from '@modulz/radix-icons';
+import ViewUser from 'components/ViewUser';
 
 const UserCard = ({ user }) => {
   const mutation = useMutation((newUser) => {
@@ -33,6 +34,9 @@ const UserCard = ({ user }) => {
   return (
     <div className="relative mb-10 shadow-lg md:m-5 w-96 hover:scale-[1.01] transition ease-in-out delay-150 rounded-md">
       <div className="flex justify-end h-14 bg-blue-500  mb-12 rounded-md">
+        <span className="drop-shadow-lg ">
+          <EnterIcon onClick={ViewUser} className="scale-[2] m-5 drop-shadow-lg hover:scale-[2.3] transition ease-in-out cursor-pointer delay-150" color="white" size="50" />
+        </span>
         <span className="drop-shadow-lg ">
           <PlusCircledIcon onClick={handleConnect} className="scale-[2] m-5 drop-shadow-lg hover:scale-[2.3] transition ease-in-out cursor-pointer delay-150" color="white" size="50" />
         </span>
