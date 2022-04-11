@@ -1,15 +1,4 @@
-import { Image, Title, Text, Divider, Button, Tabs } from '@mantine/core';
-// import nurse from '../img/nurse.svg';
-// import curve from '../img/wave-haikei.svg';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import logo from 'img/logo.png';
-import book from 'img/book.png';
-import money from 'img/money.png';
-import certificate from 'img/certificate.png';
-import computer from 'img/computer.png';
-import clock from 'img/clock.png';
-import secure from 'img/secure.png';
 
 import Intro from '../Sections/Intro';
 import About from '../Sections/About';

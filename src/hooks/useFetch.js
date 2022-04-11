@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+
+
 /**
  * @param {string} url
  */
@@ -11,32 +13,32 @@ const useFetch = (url) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const controller = new AbortController();
+    const controller = new AbortController()
     const fetchData = async () => {
-      setLoading(true);
+      setLoading(true)
       try {
-        const res = await axios.get(url, { signal: controller.signal });
-        if (res.statusText !== 'OK') throw Error('could not fetch data');
-        setData(res.data);
-        setError(null);
-        setLoading(false);
+        const res = await axios.get(url, { signal: controller.signal })
+        if(res.statusText !== 'OK') throw Error('could not fetch data')
+        setData(res.data)
+        setError(null)
+        setLoading(false)
       } catch (error) {
-        if (error.message === 'canceled') {
-          setLoading(false);
-        } else if (error.response.status == 401) {
-          setError('Please log in');
-        } else {
-          setError(error.response);
+        if(error.message === 'canceled') {
+          setLoading(false)
+        }else if (error.response.status == 401) {
+          setError('Please log in')
+        }else{
+          setError(error.response)
         }
-      }
-    };
-    fetchData();
+      } 
+    }
+    fetchData()
     return () => {
-      controller.abort();
+      controller.abort()
     };
-  }, [url, data]);
+  }, [url, data])
 
-  return { data, loading, error };
-};
+  return { data, loading, error }
+}
 
 export default useFetch;

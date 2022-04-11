@@ -1,4 +1,4 @@
-import { Card, Group, Loader, Text, Avatar, Divider, Button, Title, ScrollArea, ActionIcon } from '@mantine/core';
+import { MultiSelect, Card, Group, Loader, Text, Avatar, Title } from '@mantine/core';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
@@ -13,8 +13,8 @@ const UserCard = ({ user }) => {
     return axios.post(endPoints.base + '/users/connect', newUser);
   });
   const [isConnected, setIsConnected] = useState(false);
-  const { id, username, role } = user;
-  const { firstName, lastName, specialty, bio, location } = user.userInfo;
+  const { id, username } = user;
+  const { specialty, bio, location } = user.userInfo;
   const handleConnect = () => {
     const data = {
       connectionId: id,
@@ -43,7 +43,7 @@ const UserCard = ({ user }) => {
       </div>
       <div className="flex absolute w-24 h-24 left-10 top-6 rounded-full bg-white">
         <div className="flex items-center justify-center m-auto text-center w-20 h-20 rounded-full bg-blue-500 text-white text-lg shadow-lg">
-          <img className="w-14 h-14 rounded-full" src={`https://ui-avatars.com/api/?name=${username}&background=4A82EE&font-size=0.35&color=fff`} alt="/" />
+          <Avatar size={45} radius="xl" src={`https://ui-avatars.com/api/?name=${username}`} />
         </div>
       </div>
 
@@ -105,7 +105,95 @@ const Connect = () => {
     const { data } = await axios.get(endPoints.base + '/users/available');
     return data;
   });
+  const SpecialityPicker = () => {
+    const [data, setData] = useState([
+      'ADHD',
+      'Anger Issues',
+      'Anxiety',
+      'Autism Spectrum Disorder',
+      'Bipolar Disorder',
+      'Depression',
+      'EMDR',
+      'Family Caregiving Stress',
+      'Trauma',
+      'Insomnia',
+      'Medication Management',
+      'OCD',
+      'PTSD',
+    ]);
 
+    return (
+      <MultiSelect
+        label="Speciality"
+        placeholder="What speciality are you looking for?"
+        data={data}
+        searchable
+        creatable
+        getCreateLabel={(query) => `+ Create ${query}`}
+        onCreate={(query) => setData((current) => [...current, query])}
+        nothingFound="Nothing found..."
+      />
+    );
+  };
+
+  const LocationPicker = () => {
+    const [data, setData] = useState([
+      'Alleghney',
+      'Armstrong',
+      'Beaver, Bedford',
+      'Blair',
+      'Butler',
+      'Cambria',
+      'Clarion',
+      'Clearfield',
+      'Crawford',
+      'Elk',
+      'Erie',
+      'Fayette',
+      'Forest',
+      'Greene',
+      'Indiana',
+      'Lawrence',
+      'Mckean',
+      'Somerset',
+      'Venango',
+      'Warren',
+      'Washington',
+      'Westmoreland',
+    ]);
+
+    return (
+      <MultiSelect
+        label="Location"
+        placeholder="What place are you looking for?"
+        data={data}
+        searchable
+        creatable
+        getCreateLabel={(query) => `+ Create ${query}`}
+        onCreate={(query) => setData((current) => [...current, query])}
+        nothingFound="Nothing found..."
+      />
+    );
+  };
+
+  const AvailabilityPicker = () => {
+    const [data, setData] = useState(['In-person', 'Remote', 'Both']);
+
+    return (
+      <MultiSelect
+        label="Availability"
+        placeholder="What availability are you looking for?"
+        data={data}
+        searchable
+        creatable
+        getCreateLabel={(query) => `+ Create ${query}`}
+        onCreate={(query) => setData((current) => [...current, query])}
+        nothingFound="Nothing found..."
+      />
+    );
+  };
+
+  function filterSearch(event) {}
   if (isLoading)
     return (
       <div className="flex items-center justify-center">
@@ -113,18 +201,32 @@ const Connect = () => {
       </div>
     );
   return (
-    <div className="w-full flex justify-center">
-      {/* <div className="hidden md:block md:w-1/3">
+    <div className="w-full p-12 flex justify-left">
+      <div className="hidden md:block md:w-1/3">
         <Group className="p-10">
-          <Title order={4}>Filters</Title>
+          <Title order={2}>Filters</Title>
         </Group>
-        <Group></Group>
-      </div> */}
-      <div>
-        <Title className="my-5" align="center">
+        <form onSubmit={filterSearch}>
+          <Group className="p-10">
+            <SpecialityPicker></SpecialityPicker>
+            <LocationPicker></LocationPicker>
+            <AvailabilityPicker></AvailabilityPicker>
+            <button type="submit" className="border-0 outline-0 bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300 cursor-pointer">
+              <p className="text-lg p-2 m-0 text-white">Filter</p>
+            </button>
+          </Group>
+        </form>
+      </div>
+      <div className="w-full md:w-2/3">
+        <Title className="" align="center">
           Connect with others:
         </Title>
-        <div className="w-full gap-7 grid grid-cols-1 lg:grid-cols-2 justify-start">{data && data.map((item) => <UserCard key={item.id} user={item} />)}</div>
+        {data && data.length === 0 && (
+          <Text className="mt-5 text-lg" align="center">
+            There are not available people to connect
+          </Text>
+        )}
+        <div className="w-full gap-7 grid grid-cols-1 lg:grid-cols-2 justify-start">{data && data.length > 0 && data.map((item) => <UserCard key={item.id} user={item} />)}</div>
       </div>
     </div>
   );

@@ -1,22 +1,47 @@
-import { Menu, Loader, Button, Text } from '@mantine/core';
+import { Menu, Loader, Button, Text, Modal, Title, ScrollArea, Group } from '@mantine/core';
 //import { Message, MessagePreview } from 'components/chat/Message';
-import { useRef, useState, React } from 'react';
+import { useRef, useState, useEffect, React } from 'react';
 import axios from 'axios';
 import endPoints from 'services/api';
 import AvailableUser from 'components/chat/AvailableUsers';
 import { Message } from 'components/chat/Message';
+import io from 'socket.io-client';
+import { Link } from 'react-router-dom';
 import { useQuery, useMutation } from 'react-query';
 import { useAuth } from 'hooks/useAuth';
 import { ArrowLeftIcon } from '@modulz/radix-icons';
+// require('./../services/socket');
 
+var socket;
+var selectedChatCompare;
 // TODO: Scroll to Botton when sending a message and when first uploading the messages, we need to make the images dynamic
 export default function Messages() {
   const { user } = useAuth();
   const [selectedChat, setSelectedChat] = useState();
-  const [open, setOpened] = useState('hidden');
+  const [activeChat, setActiveChat] = useState();
+  const [open, setOpened] = useState(false);
+  const [openModal, setOpenedModal] = useState(false);
+
+  const [socketConnected, setSocketConnected] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [messages, setMessages] = useState(null);
   const userId = user.user.id;
   const textRef = useRef(null);
   const chatRef = useRef(null);
+
+  useEffect(() => {
+    socket = io(endPoints.base, {
+      extraHeaders: {
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
+      },
+    });
+    socket.emit('setup', user);
+    socket.on('connected', () => {
+      setSocketConnected(true);
+    });
+    return () => socket.disconnect();
+    // eslint-disable-next-line
+  }, []);
 
   const messageQuery = useQuery('messages', async () => {
     axios.defaults.headers.api = `123`;
@@ -24,16 +49,47 @@ export default function Messages() {
     const { data } = await axios.get(endPoints.base + '/users/connections');
     return data;
   });
-  const conversationQuery = useQuery(
-    ['conversation', selectedChat],
-    async () => {
+
+  const fetchMessages = async () => {
+    if (!selectedChat) return;
+    try {
+      setLoading(true);
       axios.defaults.headers.api = `123`;
       axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
       const { data } = await axios.get(endPoints.base + '/messages/' + selectedChat.connectionId);
-      return data;
-    },
-    { enabled: selectedChat != null }
-  );
+      setActiveChat(data[0].id);
+      setMessages(data[0].messages);
+      socket.emit('join chat', data[0].id);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMessages();
+    // eslint-disable-next-line
+  }, [selectedChat]);
+
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+    // eslint-disable-next-line
+  }, [messages]);
+
+  useEffect(() => {
+    socket.on('message received', (newMessageRecieved) => {
+      if (
+        !activeChat || // if chat is not selected or doesn't match current chat
+        activeChat !== newMessageRecieved.id
+      ) {
+        console.log('in here chat');
+      } else {
+        if (messages) setMessages([...messages, newMessageRecieved.message]);
+      }
+    });
+  });
 
   const mutation = useMutation((newMessage, oldMessage) => {
     axios.defaults.headers.api = `123`;
@@ -48,33 +104,33 @@ export default function Messages() {
       message: textRef.current.value,
     };
     mutation.mutate(data, {
-      onSuccess: () => {
-        conversationQuery.refetch();
+      onSuccess: (data) => {
+        socket.emit('new message', { id: activeChat, message: data.data });
+        setMessages([...messages, data.data]);
       },
     });
+
     textRef.current.value = '';
     chatRef.current?.scrollIntoView();
   }
 
-  const handleSelect = (id) => {
+  const handleSelect = async (id) => {
     setOpened(true);
     setSelectedChat(id);
   };
-  console.log(conversationQuery.data);
+
+  const submitHanlder = async (event) => {
+    event.preventDefault();
+    //reoprtUser();
+    setOpenedModal(false);
+  };
   return (
     <div className="grid place-items-center mx-5 md:mx-11 my-11">
       <div className="flex flex-row border-solid border-2 border-gray-200 rounded-lg w-full max-w-[1192px] h-[75vh] shadow-lg">
         {/* Inbox section */}
         <div className={`${open ? 'hidden' : 'flex'} md:flex flex-col border-solid border-0 border-r-2 border-gray-200 rounded-tl-lg rounded-bl-lg w-full md:w-[258px] lg:w-[368px] h-full`}>
           <div className="relative flex items-center border-solid border-0 border-b-2 border-gray-200 justify-between rounded-tl-lg w-full max-h-[94px]">
-            <p className="text-lg font-bold m-auto pl-14 justify-self-cente py-5">Inbox</p>
-            {/* This p tag will be a button that will allow the user to sort by read/unread */}
-            {/* <p className="text-lg font-bold w-14 pr-5 cursor-pointer">...</p> */}
-            <Menu className="mr-4" closeOnScroll={true}>
-              <Menu.Item>Inbox</Menu.Item>
-              <Menu.Item>Unread</Menu.Item>
-              <Menu.Item>Archived</Menu.Item>
-            </Menu>
+            <p className="text-lg font-bold m-auto justify-self-cente py-5">Inbox</p>
           </div>
           <div className="overflow-hidden overflow-y-auto h-full">
             {/* Inbox item components will be rendered here */}
@@ -89,6 +145,28 @@ export default function Messages() {
             )}
           </div>
         </div>
+        <Modal opened={openModal} onClose={() => setOpenedModal(false)}>
+          <Title align="center">Report a User</Title>
+          <ScrollArea className="mt-10" offsetScrollbars type="always" style={{ height: 250 }}>
+            <Group className="flex flex-col" position="center" spacing="sm">
+              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
+                Inappropriate Content
+              </Button>
+              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
+                Spam
+              </Button>
+              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
+                Fake Profile
+              </Button>
+              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
+                Privacy
+              </Button>
+              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
+                Other
+              </Button>
+            </Group>
+          </ScrollArea>
+        </Modal>
         {/* Message section */}
         <div className={`md:flex flex-col rounded-tr-lg rounded-br-lg w-full ${open ? 'flex' : 'hidden'} h-full`}>
           <div className="relative flex items-center border-solid border-0 border-b-2 border-gray-200 justify-between rounded-tr-lg w-full max-h-[94px]">
@@ -97,14 +175,18 @@ export default function Messages() {
             </Button>
             <p className="text-lg font-bold m-auto pl-14 justify-self-center py-5">{selectedChat?.username}</p>
             {/* This p tag will be a button that will allow the user to sort by read/unread */}
-            <Menu className="mr-4">
-              <Menu.Item>Archive</Menu.Item>
-              <Menu.Item>Report</Menu.Item>
-            </Menu>
+            {activeChat && (
+              <Menu className="mr-4">
+                <Menu.Item onClick={() => setOpenedModal((o) => !o)}>Report</Menu.Item>
+                <Menu.Item component="a" href="/timesheet">
+                  Timesheet
+                </Menu.Item>
+              </Menu>
+            )}
           </div>
-          <div className="overflow-auto overflow-y-auto h-full p-[18px]">
+          <div ref={chatRef} className="overflow-auto overflow-y-auto h-full p-[18px]">
             {/* Message item components will be rendered here */}
-            {conversationQuery.isIdle ? (
+            {!selectedChat ? (
               <Text align="center" className="m-auto mt-10">
                 Select a conversation
               </Text>
@@ -112,11 +194,9 @@ export default function Messages() {
               <div></div>
             )}
             {/**user.user.id ==  */}
-            {!conversationQuery.isIdle && conversationQuery.isLoading ? <Loader /> : <div></div>}
-            {conversationQuery.data &&
-              conversationQuery.data?.length > 0 &&
-              conversationQuery.data[0].messages.map((item) => <Message key={item.id} message={item} receiverId={selectedChat.connectionId} senderId={userId} />)}
-            {conversationQuery.data && conversationQuery.data?.length == 0 && (
+            {loading ? <Loader /> : <div></div>}
+            {messages && messages?.length > 0 && messages.map((item) => <Message key={item.id} message={item} receiverId={selectedChat.connectionId} senderId={userId} />)}
+            {messages && messages?.length == 0 && (
               <Text align="center" className="m-auto mt-10">
                 The Conversation is Empty
               </Text>

@@ -1,6 +1,5 @@
 import { Card, Avatar, Text, Divider, Title, Button, Checkbox, Modal, Group, TextInput, ScrollArea, Textarea, Select, Loader } from '@mantine/core';
 import axios from 'axios';
-import { func } from 'joi';
 import React, { useRef, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import endPoints from 'services/api';
@@ -8,7 +7,30 @@ import endPoints from 'services/api';
 const ConnectCard = ({ userId, user, handleAccept }) => {
   const { accepted, id: connectionId, userId: requestId } = user.Connection;
   const { role, username } = user;
-  const { firstName, lastName, bio, location } = user.userInfo;
+  const { firstName, lastName } = user.userInfo;
+  const { id } = user.Connection;
+  const [isDeleted, setIsDeleted] = useState(false);
+  const deleteMutation = useMutation((newUser) => {
+    axios.defaults.headers.api = `123`;
+    axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+    return axios.post(endPoints.base + '/users/connect/delete', newUser);
+  });
+  const handleDelete = () => {
+    const data = {
+      connectionId: id,
+    };
+    deleteMutation.mutate(data, {
+      onSuccess: () => {
+        setIsDeleted(true);
+      },
+    });
+  };
+  if (isDeleted)
+    return (
+      <Card className="w-full my-7 flex" shadow="md" padding="lg">
+        <Text>You have deleted a connection with @{username}</Text>
+      </Card>
+    );
   return (
     <>
       <Card className="w-full flex my-4" shadow="sm" padding="lg">
@@ -19,6 +41,9 @@ const ConnectCard = ({ userId, user, handleAccept }) => {
           <Text>{`${username}`}</Text>
           <Text>{`Role: ${role}`}</Text>
           {accepted === true || userId === requestId ? <div></div> : <Button onClick={() => handleAccept(connectionId)}>Accept</Button>}
+          <Button variant="outline" color="red" onClick={() => handleDelete()}>
+            Delete
+          </Button>
         </Group>
       </Card>
     </>
@@ -26,14 +51,6 @@ const ConnectCard = ({ userId, user, handleAccept }) => {
 };
 export default function Profile() {
   const [opened, setOpened] = useState(false);
-  const [specVal, setSpecVal] = useState('');
-  const [newSpec, setNewSpec] = useState('');
-  const options = {
-    headers: {
-      api: 123,
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  };
 
   const {
     isLoading,
@@ -74,9 +91,7 @@ export default function Profile() {
   const emailRef = useRef(null);
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
-  const usernameRef = useRef(null);
   const locationRef = useRef(null);
-  const availabiiltyRef = useRef(null);
   const bioRef = useRef(null);
   const specialtyRef = useRef(null);
 
@@ -88,7 +103,7 @@ export default function Profile() {
         lastName: lastNameRef.current.value,
         location: locationRef.current.value,
         bio: bioRef.current.value,
-        specialty: specialtyRef.current.value == 'Other' ? newSpec : specialtyRef.current.value,
+        specialty: specialtyRef.current.value,
       },
     };
     mutation.mutate(data, {
@@ -103,46 +118,14 @@ export default function Profile() {
     setOpened(false);
   };
 
-  function test() {
-    if (specVal === 'Other') {
-      return (
-        <TextInput
-          placeholder="Your Specialty"
-          label="Please specify"
-          value={newSpec}
-          onChange={(event) => {
-            setNewSpec(event.currentTarget.value);
-          }}
-          required
-        />
-      );
-    }
-  }
-
   let specialtyOptions = [
-    { value: 'Anger Issues', label: 'Anger Issues' },
-    { value: 'Anxiety', label: 'Anxiety' },
-    { value: 'Attention Deficit Hyperactivity Disorder (ADHD)', label: 'Attention Deficit Hyperactivity Disorder (ADHD)' },
-    { value: 'Autism Spectrum Disorders', label: 'Autism Spectrum Disorders' },
-    { value: 'Biopolar Disorder', label: 'Biopolar Disorder' },
-    { value: 'Depression', label: 'Depression' },
-    { value: 'Eye Movement Desensitization and Reprocessing (EMDR)', label: 'Eye Movement Desensitization and Reprocessing (EMDR)' },
-    { value: 'Family Caregiving Stress', label: 'Family Caregiving Stress' },
-    { value: 'Gender Issues', label: 'Gender Issues' },
-    { value: 'Insomnia', label: 'Insomnia' },
-    { value: 'Job Stress', label: 'Job Stress' },
-    { value: 'Medication Management', label: 'Medication Management' },
-    { value: 'Obsessive Compulsive Disorder (OCD)', label: 'Obsessive Compulsive Disorder (OCD)' },
-    { value: 'Post Traumatic Stress Disorder (PTSD)', label: 'Post Traumatic Stress Disorder (PTSD)' },
-    { value: 'Psychosis and Schizophrenia Spectrum Disorders', label: 'Psychosis and Schizophrenia Spectrum Disorders' },
-    { value: 'Stress', label: 'Stress' },
+    { value: 'ADHD', label: 'ADHD' },
+    { value: 'PTSD', label: 'PTSD' },
     { value: 'Substance Abuse', label: 'Substance Abuse' },
-    { value: 'Suicidal Thoughts', label: 'Suicidal Thoughts' },
-    { value: 'Therapy', label: 'Therapy' },
-    { value: 'Trauma', label: 'Trauma' },
-    { value: 'Other', label: 'Other' },
+    { value: 'Biopolar Disorder', label: 'Biopolar Disorder' },
+    { value: 'Stress', label: 'Stress' },
+    { value: 'Anxiety', label: 'Anxiety' },
   ];
-  console.log(userData);
   if (isLoading)
     return (
       <div className="flex items-center justify-center">
@@ -150,14 +133,12 @@ export default function Profile() {
       </div>
     );
   return (
-    <div>
+    <div className="p-2 md:pd-5">
       {isError && <p>{JSON.stringify(error)}</p>}
       {userData && (
-        <div className="w-full max-h-fit mt-12 divide-x-2 flex flex-col lg:flex-row">
+        <div className="w-full max-h-fit mt-12 divide-x-2 flex flex-col md:flex-row">
           <Modal opened={opened} onClose={() => setOpened(false)}>
-            <Title align="center" className="text-2xl">
-              Update your Information
-            </Title>
+            <Title align="center">Update your Information</Title>
             <ScrollArea className="mt-10" offsetScrollbars type="always" style={{ height: 300 }}>
               <TextInput ref={emailRef} type="email" defaultValue={userData.user.email ?? ''} placeholder="Email" label="Email" required />
               <Group>
@@ -165,17 +146,7 @@ export default function Profile() {
                 <TextInput ref={lastNameRef} placeholder="Last Name" defaultValue={userData.user.userInfo.lastName ?? ''} label="Last Name" required />
               </Group>
               <TextInput ref={locationRef} placeholder="Location" defaultValue={userData.user.userInfo.location ?? ''} label="Location" required />
-              <Select
-                ref={specialtyRef}
-                data={specialtyOptions}
-                defaultValue={userData.user.userInfo.specialty}
-                value={specVal}
-                onChange={setSpecVal}
-                placeholder="Specialty"
-                label="Specialty"
-                required
-              />
-              {test()}
+              <Select ref={specialtyRef} data={specialtyOptions} defaultValue={userData.user.userInfo.specialty ?? ''} placeholder="Specialty" label="Specialty" required />
               <Textarea ref={bioRef} placeholder="Biography" defaultValue={userData.user.userInfo.bio ?? ''} label="Biography" required />
             </ScrollArea>
             <Group sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -185,19 +156,21 @@ export default function Profile() {
             </Group>
           </Modal>
 
-          <div className="md:ml-3 lg:w-1/4 w-full mt-10">
+          <div className="md:ml-3 md:w-1/3 lg:w-1/6 w-full">
             <div className="w-full flex flex-col justify-center items-center">
-              <Title className="text-2xl">Connections</Title>
-              {userData.connections && userData.connections.filter((ele) => ele.Connection.accepted == true).map((item) => <ConnectCard isConnected={true} key={item.id} user={item} />)}
+              <Title>Connections</Title>
+              {userData.connections && userData.connections.filter((ele) => ele.Connection.accepted === true).lenght === 0
+                ? "you don't have any connections"
+                : userData.connections.filter((ele) => ele.Connection.accepted === true).map((item) => <ConnectCard isConnected={true} key={item.id} user={item} />)}
             </div>
           </div>
 
-          <div className="order-first lg:order-2 md:ml-3 md:w-5/6 w-full px-10 md:mx-10">
+          <div className="order-first lg:order-2 md:w-1/3 lg:w-4/6 w-full px-12">
             <div className="flex justify-between w-full md:w-full mb-5">
               <Title>Profile</Title>
               <Button onClick={() => setOpened((o) => !o)}>Edit</Button>
             </div>
-            <div className=" self-center w-5/6 md:w-full h-2/3 space-y-4 mx-10">
+            <div className=" self-center w-5/6 md:w-full h-2/3 space-y-4">
               <Divider className="mb-5" />
               <Text className="flex justify-between">
                 <Title className="inline-block mr-2" order={4}>
@@ -259,17 +232,18 @@ export default function Profile() {
               </Text>
             </div>
           </div>
-          <div className="md:ml-3 lg:w-1/4 w-full mt-10">
+          <div className="md:w-1/3 lg:w-1/6 w-full ml-5">
             <div className="w-full flex flex-col justify-center items-center">
-              <Title className="text-2xl">Requests</Title>
-              <div>
-                {userData.connections &&
-                  userData.connections
-                    .filter((ele) => {
-                      return ele.Connection.accepted === false;
-                    })
-                    .map((item) => <ConnectCard userId={userData.user.id} handleAccept={handleAccept} isConnected={false} key={item.id} user={item} />)}
-              </div>
+              <Title className="mb-5">Requests</Title>
+              {userData.connections && userData.connections.filter((ele) => ele.Connection.accepted === false).length === 0 ? (
+                <Text>You don't have any requests</Text>
+              ) : (
+                userData.connections
+                  .filter((ele) => {
+                    return ele.Connection.accepted === false;
+                  })
+                  .map((item) => <ConnectCard userId={userData.user.id} handleAccept={handleAccept} isConnected={false} key={item.id} user={item} />)
+              )}
             </div>
           </div>
         </div>
