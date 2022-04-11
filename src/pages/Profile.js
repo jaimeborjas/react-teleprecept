@@ -8,6 +8,29 @@ const ConnectCard = ({ userId, user, handleAccept }) => {
   const { accepted, id: connectionId, userId: requestId } = user.Connection;
   const { role, username } = user;
   const { firstName, lastName } = user.userInfo;
+  const { id } = user.Connection;
+  const [isDeleted, setIsDeleted] = useState(false);
+  const deleteMutation = useMutation((newUser) => {
+    axios.defaults.headers.api = `123`;
+    axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+    return axios.post(endPoints.base + '/users/connect/delete', newUser);
+  });
+  const handleDelete = () => {
+    const data = {
+      connectionId: id,
+    };
+    deleteMutation.mutate(data, {
+      onSuccess: () => {
+        setIsDeleted(true);
+      },
+    });
+  };
+  if (isDeleted)
+    return (
+      <Card className="w-full my-7 flex" shadow="md" padding="lg">
+        <Text>You have deleted a connection with @{username}</Text>
+      </Card>
+    );
   return (
     <>
       <Card className="w-full flex my-4" shadow="sm" padding="lg">
@@ -18,6 +41,9 @@ const ConnectCard = ({ userId, user, handleAccept }) => {
           <Text>{`${username}`}</Text>
           <Text>{`Role: ${role}`}</Text>
           {accepted === true || userId === requestId ? <div></div> : <Button onClick={() => handleAccept(connectionId)}>Accept</Button>}
+          <Button variant="outline" color="red" onClick={() => handleDelete()}>
+            Delete
+          </Button>
         </Group>
       </Card>
     </>
@@ -107,10 +133,10 @@ export default function Profile() {
       </div>
     );
   return (
-    <div>
+    <div className="p-2 md:pd-5">
       {isError && <p>{JSON.stringify(error)}</p>}
       {userData && (
-        <div className="w-full max-h-fit mt-12 divide-x-2 flex flex-col lg:flex-row">
+        <div className="w-full max-h-fit mt-12 divide-x-2 flex flex-col md:flex-row">
           <Modal opened={opened} onClose={() => setOpened(false)}>
             <Title align="center">Update your Information</Title>
             <ScrollArea className="mt-10" offsetScrollbars type="always" style={{ height: 300 }}>
@@ -130,19 +156,21 @@ export default function Profile() {
             </Group>
           </Modal>
 
-          <div className="md:ml-3 lg:w-1/4 w-full mt-10">
+          <div className="md:ml-3 md:w-1/3 lg:w-1/6 w-full">
             <div className="w-full flex flex-col justify-center items-center">
               <Title>Connections</Title>
-              {userData.connections && userData.connections.filter((ele) => ele.Connection.accepted === true).map((item) => <ConnectCard isConnected={true} key={item.id} user={item} />)}
+              {userData.connections && userData.connections.filter((ele) => ele.Connection.accepted === true).lenght === 0
+                ? "you don't have any connections"
+                : userData.connections.filter((ele) => ele.Connection.accepted === true).map((item) => <ConnectCard isConnected={true} key={item.id} user={item} />)}
             </div>
           </div>
 
-          <div className="order-first lg:order-2 md:ml-3 md:w-5/6 w-full px-10 md:mx-10">
+          <div className="order-first lg:order-2 md:w-1/3 lg:w-4/6 w-full px-12">
             <div className="flex justify-between w-full md:w-full mb-5">
               <Title>Profile</Title>
               <Button onClick={() => setOpened((o) => !o)}>Edit</Button>
             </div>
-            <div className=" self-center w-5/6 md:w-full h-2/3 space-y-4 mx-10">
+            <div className=" self-center w-5/6 md:w-full h-2/3 space-y-4">
               <Divider className="mb-5" />
               <Text className="flex justify-between">
                 <Title className="inline-block mr-2" order={4}>
@@ -204,17 +232,18 @@ export default function Profile() {
               </Text>
             </div>
           </div>
-          <div className="md:ml-3 lg:w-1/4 w-full mt-10">
+          <div className="md:w-1/3 lg:w-1/6 w-full ml-5">
             <div className="w-full flex flex-col justify-center items-center">
-              <Title>Requests</Title>
-              <div>
-                {userData.connections &&
-                  userData.connections
-                    .filter((ele) => {
-                      return ele.Connection.accepted === false;
-                    })
-                    .map((item) => <ConnectCard userId={userData.user.id} handleAccept={handleAccept} isConnected={false} key={item.id} user={item} />)}
-              </div>
+              <Title className="mb-5">Requests</Title>
+              {userData.connections && userData.connections.filter((ele) => ele.Connection.accepted === false).length === 0 ? (
+                <Text>You don't have any requests</Text>
+              ) : (
+                userData.connections
+                  .filter((ele) => {
+                    return ele.Connection.accepted === false;
+                  })
+                  .map((item) => <ConnectCard userId={userData.user.id} handleAccept={handleAccept} isConnected={false} key={item.id} user={item} />)
+              )}
             </div>
           </div>
         </div>

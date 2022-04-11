@@ -197,10 +197,10 @@ const Connect = () => {
       </div>
     );
   return (
-    <div className="w-full flex justify-left">
+    <div className="w-full p-12 flex justify-left">
       <div className="hidden md:block md:w-1/3">
         <Group className="p-10">
-          <Title order={4}>Filters</Title>
+          <Title order={2}>Filters</Title>
         </Group>
         <form onSubmit={filterSearch}>
           <Group className="p-10">
@@ -213,11 +213,16 @@ const Connect = () => {
           </Group>
         </form>
       </div>
-      <div>
-        <Title className="my-5" align="center">
+      <div className="w-full md:w-2/3">
+        <Title className="" align="center">
           Connect with others:
         </Title>
-        <div className="w-full gap-7 grid grid-cols-1 lg:grid-cols-2 justify-start">{data && data.map((item) => <UserCard key={item.id} user={item} />)}</div>
+        {data && data.length === 0 && (
+          <Text className="mt-5 text-lg" align="center">
+            There are not available people to connect
+          </Text>
+        )}
+        <div className="w-full gap-7 grid grid-cols-1 lg:grid-cols-2 justify-start">{data && data.length > 0 && data.map((item) => <UserCard key={item.id} user={item} />)}</div>
       </div>
     </div>
   );
