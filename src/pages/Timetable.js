@@ -77,11 +77,7 @@ const Timetable = () => {
         </ScrollArea>
       );
     }
-    /*const mutation = useMutation((newPost) => {
-      axios.defaults.headers.api = `123`;
-      axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-      return axios.post(endPoints.base + '/messages/send', newPost);
-    });*/
+
     const hoursRef = useRef(null);
     const dateRef = useRef(null);
     const {
@@ -91,7 +87,7 @@ const Timetable = () => {
       error,
       refetch,
     } = useQuery('timesheet', async () => {
-      axios.defaults.headers.api = `123`;
+      axios.defaults.headers.api = 123;
       axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
       const { data } = await axios.get(endPoints.base + `/timesheet/${id}`);
       return data;
@@ -104,9 +100,9 @@ const Timetable = () => {
     };
 
     const mutation = useMutation((log) => {
-      axios.defaults.headers.api = `123`;
+      axios.defaults.headers.api = 123;
       axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
-      return axios.patch(endPoints.base + `/timesheet/${id}`, log);
+      return axios.patch(endPoints.base + `/timesheet/add/${id}`, log);
     });
 
     async function logPost () {
@@ -138,7 +134,7 @@ const Timetable = () => {
             label="Full name"
             required
           />
-          <Button type="submit" onClick={submitHandler}>
+          <Button type="submit">
             Submit
           </Button>
         </form>

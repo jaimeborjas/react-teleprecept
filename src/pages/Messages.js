@@ -1,4 +1,4 @@
-import { Menu, Loader, Button, Text } from '@mantine/core';
+import { Menu, Loader, Button, Text, Modal, Title, ScrollArea, Group } from '@mantine/core';
 //import { Message, MessagePreview } from 'components/chat/Message';
 import { useRef, useState, useEffect, React } from 'react';
 import axios from 'axios';
@@ -6,6 +6,7 @@ import endPoints from 'services/api';
 import AvailableUser from 'components/chat/AvailableUsers';
 import { Message } from 'components/chat/Message';
 import io from 'socket.io-client';
+import { Link } from 'react-router-dom';
 import { useQuery, useMutation } from 'react-query';
 import { useAuth } from 'hooks/useAuth';
 import { ArrowLeftIcon } from '@modulz/radix-icons';
@@ -19,8 +20,9 @@ export default function Messages() {
   const [selectedChat, setSelectedChat] = useState();
   const [activeChat, setActiveChat] = useState();
   const [open, setOpened] = useState(false);
+  const [openModal, setOpenedModal] = useState(false);
+
   const [socketConnected, setSocketConnected] = useState(false);
-  const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState(null);
   const userId = user.user.id;
@@ -70,12 +72,11 @@ export default function Messages() {
   }, [selectedChat]);
 
   useEffect(() => {
-    if(chatRef.current) {
+    if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
     // eslint-disable-next-line
   }, [messages]);
-
 
   useEffect(() => {
     socket.on('message received', (newMessageRecieved) => {
@@ -85,10 +86,9 @@ export default function Messages() {
       ) {
         console.log('in here chat');
       } else {
-        if(messages) setMessages([...messages, newMessageRecieved.message]);
+        if (messages) setMessages([...messages, newMessageRecieved.message]);
       }
     });
-
   });
 
   const mutation = useMutation((newMessage, oldMessage) => {
@@ -118,20 +118,19 @@ export default function Messages() {
     setOpened(true);
     setSelectedChat(id);
   };
+
+  const submitHanlder = async (event) => {
+    event.preventDefault();
+    //reoprtUser();
+    setOpenedModal(false);
+  };
   return (
     <div className="grid place-items-center mx-5 md:mx-11 my-11">
       <div className="flex flex-row border-solid border-2 border-gray-200 rounded-lg w-full max-w-[1192px] h-[75vh] shadow-lg">
         {/* Inbox section */}
         <div className={`${open ? 'hidden' : 'flex'} md:flex flex-col border-solid border-0 border-r-2 border-gray-200 rounded-tl-lg rounded-bl-lg w-full md:w-[258px] lg:w-[368px] h-full`}>
           <div className="relative flex items-center border-solid border-0 border-b-2 border-gray-200 justify-between rounded-tl-lg w-full max-h-[94px]">
-            <p className="text-lg font-bold m-auto pl-14 justify-self-cente py-5">Inbox</p>
-            {/* This p tag will be a button that will allow the user to sort by read/unread */}
-            {/* <p className="text-lg font-bold w-14 pr-5 cursor-pointer">...</p> */}
-            <Menu className="mr-4" closeOnScroll={true}>
-              <Menu.Item>Inbox</Menu.Item>
-              <Menu.Item>Unread</Menu.Item>
-              <Menu.Item>Archived</Menu.Item>
-            </Menu>
+            <p className="text-lg font-bold m-auto justify-self-cente py-5">Inbox</p>
           </div>
           <div className="overflow-hidden overflow-y-auto h-full">
             {/* Inbox item components will be rendered here */}
@@ -146,6 +145,28 @@ export default function Messages() {
             )}
           </div>
         </div>
+        <Modal opened={openModal} onClose={() => setOpenedModal(false)}>
+          <Title align="center">Report a User</Title>
+          <ScrollArea className="mt-10" offsetScrollbars type="always" style={{ height: 250 }}>
+            <Group className="flex flex-col" position="center" spacing="sm">
+              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
+                Inappropriate Content
+              </Button>
+              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
+                Spam
+              </Button>
+              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
+                Fake Profile
+              </Button>
+              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
+                Privacy
+              </Button>
+              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
+                Other
+              </Button>
+            </Group>
+          </ScrollArea>
+        </Modal>
         {/* Message section */}
         <div className={`md:flex flex-col rounded-tr-lg rounded-br-lg w-full ${open ? 'flex' : 'hidden'} h-full`}>
           <div className="relative flex items-center border-solid border-0 border-b-2 border-gray-200 justify-between rounded-tr-lg w-full max-h-[94px]">
@@ -154,10 +175,14 @@ export default function Messages() {
             </Button>
             <p className="text-lg font-bold m-auto pl-14 justify-self-center py-5">{selectedChat?.username}</p>
             {/* This p tag will be a button that will allow the user to sort by read/unread */}
-            <Menu className="mr-4">
-              <Menu.Item>Archive</Menu.Item>
-              <Menu.Item>Report</Menu.Item>
-            </Menu>
+            {activeChat && (
+              <Menu className="mr-4">
+                <Menu.Item onClick={() => setOpenedModal((o) => !o)}>Report</Menu.Item>
+                <Menu.Item component="a" href="/timesheet">
+                  Timesheet
+                </Menu.Item>
+              </Menu>
+            )}
           </div>
           <div ref={chatRef} className="overflow-auto overflow-y-auto h-full p-[18px]">
             {/* Message item components will be rendered here */}
