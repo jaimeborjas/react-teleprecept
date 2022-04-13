@@ -57,7 +57,7 @@ export default function Messages() {
       axios.defaults.headers.api = `123`;
       axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
       const { data } = await axios.get(endPoints.base + '/messages/' + selectedChat.connectionId);
-      setActiveChat(data[0].id);
+      selectedChatCompare = data[0].id;
       setMessages(data[0].messages);
       socket.emit('join chat', data[0].id);
       setLoading(false);
@@ -81,10 +81,10 @@ export default function Messages() {
   useEffect(() => {
     socket.on('message received', (newMessageRecieved) => {
       if (
-        !activeChat || // if chat is not selected or doesn't match current chat
-        activeChat !== newMessageRecieved.id
+        !selectedChatCompare || // if chat is not selected or doesn't match current chat
+        selectedChatCompare !== newMessageRecieved.id
       ) {
-        console.log('in here chat');
+        return;
       } else {
         if (messages) setMessages([...messages, newMessageRecieved.message]);
       }
