@@ -1,4 +1,5 @@
 import { Card, Avatar, Text, Divider, Title, Button, Checkbox, Modal, Group, TextInput, ScrollArea, Textarea, Select, Loader } from '@mantine/core';
+import UploadFile from 'components/forms/UploadFile.js';
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
@@ -274,6 +275,13 @@ export default function Profile() {
                   Availability:{' '}
                 </Title>
                 {userData.user.userInfo.availability ? <Checkbox checked disabled /> : <Checkbox />}
+              </Text>
+              <Text className="flex justify-between">
+                {' '}
+                <Title className="inline-block mr-2" order={4}>
+                  Upload:{' '}
+                  <UploadFile />
+                </Title>  
               </Text>
             </div>
           </div>
