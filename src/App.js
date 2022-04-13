@@ -11,6 +11,7 @@ import Login from 'pages/Login';
 import SignUp from 'pages/Signup';
 import Profile from 'pages/Profile';
 import Connect from 'pages/Connect';
+import Timetable from 'pages/Timetable';
 import { RecoverPassword } from 'components/forms/RecoverPassword';
 import { ChangePassword } from 'components/forms/ChangePassword';
 import { useEffect, useState } from 'react';
@@ -46,6 +47,7 @@ export default function App() {
                   <Route path="/connect" element={<Connect />}>
                     Hello
                   </Route>
+                  <Route path="/timesheet" element={<Timetable />}></Route>
                   <Route path="/profile" element={<Profile />}></Route>
                   <Route path="/messages" element={<Messages />}></Route>
                   <Route path="/login" element={<Login />}></Route>

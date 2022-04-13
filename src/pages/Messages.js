@@ -1,4 +1,4 @@
-import { Menu, Loader, Button, Text, Modal, Title, ScrollArea, Group } from '@mantine/core';
+import { Menu, Loader, Button, Text, Modal, Title, ScrollArea, Group, Textarea } from '@mantine/core';
 //import { Message, MessagePreview } from 'components/chat/Message';
 import { useRef, useState, useEffect, React } from 'react';
 import axios from 'axios';
@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { useQuery, useMutation } from 'react-query';
 import { useAuth } from 'hooks/useAuth';
 import { ArrowLeftIcon } from '@modulz/radix-icons';
+//import { timeUntilStale } from 'react-query/types/core/utils';
 // require('./../services/socket');
 
 var socket;
@@ -57,7 +58,7 @@ export default function Messages() {
       axios.defaults.headers.api = `123`;
       axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
       const { data } = await axios.get(endPoints.base + '/messages/' + selectedChat.connectionId);
-      setActiveChat(data[0].id);
+      selectedChatCompare = data[0].id;
       setMessages(data[0].messages);
       socket.emit('join chat', data[0].id);
       setLoading(false);
@@ -81,10 +82,10 @@ export default function Messages() {
   useEffect(() => {
     socket.on('message received', (newMessageRecieved) => {
       if (
-        !activeChat || // if chat is not selected or doesn't match current chat
-        activeChat !== newMessageRecieved.id
+        !selectedChatCompare || // if chat is not selected or doesn't match current chat
+        selectedChatCompare !== newMessageRecieved.id
       ) {
-        console.log('in here chat');
+        return;
       } else {
         if (messages) setMessages([...messages, newMessageRecieved.message]);
       }
@@ -117,6 +118,7 @@ export default function Messages() {
   const handleSelect = async (id) => {
     setOpened(true);
     setSelectedChat(id);
+    console.log(id);
   };
 
   const submitHanlder = async (event) => {
@@ -140,29 +142,18 @@ export default function Messages() {
               messageQuery.data.map((item, rank, i) => {
                 const username = item.requestedTo.id === userId ? item.requester.username : item.requestedTo.username;
                 const connectionId = item.requestedTo.id === userId ? item.requester.id : item.requestedTo.id;
-                return <AvailableUser handleClick={handleSelect} key={item.id} connectionId={connectionId} username={username} />;
+                return <AvailableUser handleClick={handleSelect} key={item.id} id={item.id} connectionId={connectionId} username={username} />;
               })
             )}
           </div>
         </div>
         <Modal opened={openModal} onClose={() => setOpenedModal(false)}>
           <Title align="center">Report a User</Title>
-          <ScrollArea className="mt-10" offsetScrollbars type="always" style={{ height: 250 }}>
+          <ScrollArea className="mt-10" offsetScrollbars type="always" style={{ height: 200 }}>
             <Group className="flex flex-col" position="center" spacing="sm">
+              <Textarea placeholder="Inappropriate Content, Spam, Other..." label="Reason for Report" autosize required />
               <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
-                Inappropriate Content
-              </Button>
-              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
-                Spam
-              </Button>
-              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
-                Fake Profile
-              </Button>
-              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
-                Privacy
-              </Button>
-              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
-                Other
+                Submit
               </Button>
             </Group>
           </ScrollArea>
@@ -178,7 +169,7 @@ export default function Messages() {
             {activeChat && (
               <Menu className="mr-4">
                 <Menu.Item onClick={() => setOpenedModal((o) => !o)}>Report</Menu.Item>
-                <Menu.Item component="a" href="/timesheet">
+                <Menu.Item component="a" href={`/timesheet/${selectedChat.connectionId}`}>
                   Timesheet
                 </Menu.Item>
               </Menu>
