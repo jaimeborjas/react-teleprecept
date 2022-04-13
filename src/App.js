@@ -49,6 +49,9 @@ export default function App() {
                   </Route>
                   <Route path="/timesheet" element={<Timetable />}></Route>
                   <Route path="/profile" element={<Profile />}></Route>
+                  <Route path="timesheet">
+                    <Route path=":id" element={<Timetable />}></Route>
+                  </Route>
                   <Route path="/messages" element={<Messages />}></Route>
                   <Route path="/login" element={<Login />}></Route>
                   <Route path="/signup" element={<SignUp />}></Route>
