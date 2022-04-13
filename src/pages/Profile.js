@@ -275,6 +275,13 @@ export default function Profile() {
                 </Title>
                 {userData.user.userInfo.availability ? <Checkbox checked disabled /> : <Checkbox />}
               </Text>
+              <Text className="flex justify-between">
+                {' '}
+                <Title className="inline-block mr-2" order={4}>
+                  Upload:{' '}
+                  <UploadFile />
+                </Title>  
+              </Text>
             </div>
           </div>
           <div className="md:w-1/3 lg:w-1/6 w-full ml-5">
