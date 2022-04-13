@@ -1,4 +1,4 @@
-import { Menu, Loader, Button, Text, Modal, Title, ScrollArea, Group } from '@mantine/core';
+import { Menu, Loader, Button, Text, Modal, Title, ScrollArea, Group, Textarea } from '@mantine/core';
 //import { Message, MessagePreview } from 'components/chat/Message';
 import { useRef, useState, useEffect, React } from 'react';
 import axios from 'axios';
@@ -147,22 +147,11 @@ export default function Messages() {
         </div>
         <Modal opened={openModal} onClose={() => setOpenedModal(false)}>
           <Title align="center">Report a User</Title>
-          <ScrollArea className="mt-10" offsetScrollbars type="always" style={{ height: 250 }}>
+          <ScrollArea className="mt-10" offsetScrollbars type="always" style={{ height: 200 }}>
             <Group className="flex flex-col" position="center" spacing="sm">
+              <Textarea placeholder="Inappropriate Content, Spam, Other..." label="Reason for Report" autosize required />
               <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
-                Inappropriate Content
-              </Button>
-              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
-                Spam
-              </Button>
-              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
-                Fake Profile
-              </Button>
-              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
-                Privacy
-              </Button>
-              <Button loading={mutation.isLoading} onClick={submitHanlder} color="red">
-                Other
+                Submit
               </Button>
             </Group>
           </ScrollArea>
