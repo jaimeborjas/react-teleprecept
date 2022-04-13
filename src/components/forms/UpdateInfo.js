@@ -8,6 +8,7 @@ let specialtyOptions = [
   { value: 'Biopolar Disorder', label: 'Biopolar Disorder' },
   { value: 'Stress', label: 'Stress' },
   { value: 'Anxiety', label: 'Anxiety' },
+  { value: 'Other', label: 'Other' },
 ];
 
 export default function UpdateInfo({userData, handleSubmit}) {
