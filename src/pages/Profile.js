@@ -1,4 +1,4 @@
-import { Card, Avatar, Text, Divider, Title, Button, Checkbox, Modal, Group, TextInput, ScrollArea, Textarea, Select, Loader } from '@mantine/core';
+import { Card, Avatar, Text, Divider, Title, Button, Checkbox, Modal, Group, TextInput, ScrollArea, Textarea, Select, Loader, MultiSelect } from '@mantine/core';
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
@@ -53,6 +53,8 @@ export default function Profile() {
   const [opened, setOpened] = useState(false);
   const [specVal, setSpecVal] = useState('');
   const [newSpec, setNewSpec] = useState('');
+
+  let specialties;
 
   const {
     isLoading,
@@ -165,6 +167,12 @@ export default function Profile() {
         <Loader />
       </div>
     );
+
+  if (userData) {
+    const specList = userData.user.userInfo.specialty;
+    specialties = specList.split(',');
+    console.log(specialties);
+  }
   return (
     <div className="p-2 md:pd-5">
       {isError && <p>{JSON.stringify(error)}</p>}
@@ -266,7 +274,13 @@ export default function Profile() {
                 <Title className="inline-block mr-2" order={4}>
                   Specialty:{' '}
                 </Title>
-                {userData.user.userInfo.specialty ?? ''}
+                {userData.user.userInfo.specialty
+                  ? specialties.map((element) => {
+                      {
+                        return <Text>{element}</Text>;
+                      }
+                    })
+                  : ''}
               </Text>
               <Text className="flex justify-between">
                 {' '}
