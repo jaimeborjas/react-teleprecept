@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { useQuery, useMutation } from 'react-query';
 import { useAuth } from 'hooks/useAuth';
 import { ArrowLeftIcon } from '@modulz/radix-icons';
+//import { timeUntilStale } from 'react-query/types/core/utils';
 // require('./../services/socket');
 
 var socket;
@@ -117,6 +118,7 @@ export default function Messages() {
   const handleSelect = async (id) => {
     setOpened(true);
     setSelectedChat(id);
+    console.log(id);
   };
 
   const submitHanlder = async (event) => {
@@ -140,7 +142,7 @@ export default function Messages() {
               messageQuery.data.map((item, rank, i) => {
                 const username = item.requestedTo.id === userId ? item.requester.username : item.requestedTo.username;
                 const connectionId = item.requestedTo.id === userId ? item.requester.id : item.requestedTo.id;
-                return <AvailableUser handleClick={handleSelect} key={item.id} connectionId={connectionId} username={username} />;
+                return <AvailableUser handleClick={handleSelect} key={item.id} id={item.id} connectionId={connectionId} username={username} />;
               })
             )}
           </div>
@@ -178,7 +180,7 @@ export default function Messages() {
             {activeChat && (
               <Menu className="mr-4">
                 <Menu.Item onClick={() => setOpenedModal((o) => !o)}>Report</Menu.Item>
-                <Menu.Item component="a" href="/timesheet">
+                <Menu.Item component="a" href={`/timesheet/${selectedChat.connectionId}`}>
                   Timesheet
                 </Menu.Item>
               </Menu>

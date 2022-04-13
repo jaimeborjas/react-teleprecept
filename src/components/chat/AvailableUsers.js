@@ -1,6 +1,6 @@
 import React from 'react';
 // TODO: add date and last message
-export default function AvailableUser({ handleClick, connectionId, username, lastMessage }) {
+export default function AvailableUser({ id, handleClick, connectionId, username, lastMessage }) {
   return (
     <div onClick={() => handleClick({ connectionId, username })} className="relative flex flex-row w-full h-[94px] p-[16px] hover:bg-gray-100 transition duration-150 cursor-pointer">
       <img className="w-14 h-14 rounded-full" src={`https://ui-avatars.com/api/?name=${username}`} alt="/" />
