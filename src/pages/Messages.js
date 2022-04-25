@@ -49,6 +49,7 @@ export default function Messages() {
     axios.defaults.headers.api = `123`;
     axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
     const { data } = await axios.get(endPoints.base + '/users/connections');
+    console.log(data);
     return data;
   });
 
@@ -172,7 +173,7 @@ export default function Messages() {
             {activeChat && (
               <Menu className="mr-4">
                 <Menu.Item onClick={() => setOpenedModal((o) => !o)}>Report</Menu.Item>
-                <Menu.Item component="a" href={`/timesheet/${selectedChat.connectionId}`}>
+                <Menu.Item component="a" href={`/timesheet/${selectedChat.id}`}>
                   Timesheet
                 </Menu.Item>
               </Menu>
