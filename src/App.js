@@ -11,6 +11,7 @@ import Login from 'pages/Login';
 import SignUp from 'pages/Signup';
 import Profile from 'pages/Profile';
 import Connect from 'pages/Connect';
+import Upload from 'pages/Upload';
 import Timetable from 'pages/Timetable';
 import { RecoverPassword } from 'components/forms/RecoverPassword';
 import { ChangePassword } from 'components/forms/ChangePassword';
