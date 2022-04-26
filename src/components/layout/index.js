@@ -71,6 +71,7 @@ export default function Layout({ children }) {
         { name: 'Connect', href: '/connect', current: false },
         { name: 'Profile', href: '/profile', current: false },
         { name: 'Messages', href: '/messages', current: false },
+        { name: 'Upload', href: '/upload', current: false },
         { name: 'Log out', href: '/logout', current: false },
       ]);
     }
