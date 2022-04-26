@@ -54,6 +54,7 @@ export default function App() {
                     <Route path=":id" element={<Timetable />}></Route>
                   </Route>
                   <Route path="/messages" element={<Messages />}></Route>
+                  <Route path="/upload" element={<Upload />}></Route>
                   <Route path="/login" element={<Login />}></Route>
                   <Route path="/signup" element={<SignUp />}></Route>
                   <Route path="/recover" element={<RecoverPassword />}></Route>
