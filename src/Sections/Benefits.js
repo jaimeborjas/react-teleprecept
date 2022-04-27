@@ -12,11 +12,11 @@ function Benefits() {
   return (
     <div className="w-full mt-6">
       <div className="mt-6">
-        <Title className="text-3xl title about">Benefits</Title>
+        <Title className="text-center #6ee7b7">Benefits</Title>
       </div>
       <div className="justify-center sm:flexflex  item-center mt-6 ">
         <Tabs grow position="center">
-          <Tabs.Tab className="title text-sm ml-50" label="Students">
+          <Tabs.Tab className="title text-sm ml-50 text-teal-300" label="Students">
             <div className="flex w-full px-30 text-center">
               <div className="w-1/4 flex flex-col justify-center items-center p-10 space-x-3 pt-100 ">
                 <img src={money} width="w-16" alt="logo" />
@@ -37,7 +37,7 @@ function Benefits() {
             </div>
           </Tabs.Tab>
 
-          <Tabs.Tab className="title text-lg" label="Preceptors">
+          <Tabs.Tab className="title text-lg text-teal-300" label="Preceptors">
             <div className="flex w-full px-30 text-center">
               <div className="w-1/4 flex flex-col justify-center items-center p-10">
                 <img src={money} width="75px" alt="logo" />
