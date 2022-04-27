@@ -119,7 +119,8 @@ export default function Layout({ children }) {
           </MediaQuery>
           <div className={classes.links}>
             {menuItems}
-            {/* {notification.length > 0 ? 'pending' : 'nothing'}{' '} */}
+            {notification >0 ? (<div className="relative h-"><span className="w-3 h-3 bg-red-500 rounded-full absolute left-[337px] top-.5 bottom-3"></span> </div>
+             ) : <span></span>}
           </div>
         </Header>
       }
