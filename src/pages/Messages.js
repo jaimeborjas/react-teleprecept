@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom';
 import { useQuery, useMutation } from 'react-query';
 import { useAuth } from 'hooks/useAuth';
 import { ArrowLeftIcon } from '@modulz/radix-icons';
+import { useNotifications } from 'hooks/useNotification';
+
 //import { timeUntilStale } from 'react-query/types/core/utils';
 // require('./../services/socket');
 
@@ -52,7 +54,7 @@ export default function Messages() {
     console.log(data);
     return data;
   });
-
+  const { notification, setNotification } = useNotifications();
   const fetchMessages = async () => {
     if (!selectedChat) return;
     try {
@@ -89,6 +91,9 @@ export default function Messages() {
         !selectedChatCompare || // if chat is not selected or doesn't match current chat
         selectedChatCompare !== newMessageRecieved.id
       ) {
+         if (!notification.includes(newMessageRecieved.id)) {
+              setNotification([newMessageRecieved.message.senderId, ...notification])
+          }
         return;
       } else {
         if (messages) setMessages([...messages, newMessageRecieved.message]);
@@ -123,6 +128,9 @@ export default function Messages() {
     setOpened(true);
     setSelectedChat(id);
     console.log(id);
+    let checkId = id.connectionId;
+    setNotification(notification.filter(n => n != checkId));
+
   };
 
   const submitHanlder = async (event) => {
@@ -146,7 +154,8 @@ export default function Messages() {
               messageQuery.data.map((item, rank, i) => {
                 const username = item.requestedTo.id === userId ? item.requester.username : item.requestedTo.username;
                 const connectionId = item.requestedTo.id === userId ? item.requester.id : item.requestedTo.id;
-                return <AvailableUser handleClick={handleSelect} key={item.id} id={item.id} connectionId={connectionId} username={username} />;
+                let notif = notification.includes(connectionId);
+                return <AvailableUser handleClick={handleSelect} key={item.id} id={item.id} connectionId={connectionId} username={username} notif={notif}/>;
               })
             )}
           </div>
