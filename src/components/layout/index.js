@@ -22,7 +22,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   link: {
-    color: theme.colors.blue[9],
+    color: '#99f6e4',
     fontSize: 14,
     fontWeight: 'bold',
     padding: 10,
@@ -32,13 +32,13 @@ const useStyles = createStyles((theme) => ({
     width: 'fit-content',
     [`&:hover`]: {
       backgroundColor: 'grey',
-      color: 'white',
+      color: '#5eead4',
       textDecoration: 'none',
     },
   },
   active: {
-    backgroundColor: theme.colors.blue[5],
-    color: 'white',
+    backgroundColor: '#f1f5f9',
+    color: '#5eead4',
   },
   links: {
     paddingRight: 35,
@@ -135,3 +135,4 @@ export default function Layout({ children }) {
     </AppShell>
   );
 }
+
