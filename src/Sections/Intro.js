@@ -26,7 +26,7 @@ function Intro() {
                 </Button>
               </Grid.Col>
               <Grid.Col lg={3} md={4}>
-                <a href="https://youtu.be/WIH_MsxdCwc" className=" flex p-5 opacity-70 hover:opacity-100 span">
+                <a href="https://youtu.be/xBpShWGecDM" className=" flex p-5 opacity-70 hover:opacity-100 span">
                   <div>
                     <PlayButton />
                   </div>
