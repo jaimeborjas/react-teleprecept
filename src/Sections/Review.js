@@ -6,7 +6,7 @@ import Stars from 'Sections/Stars';
 function Review() {
   return (
     <div className="w-full mt-10 pl-30 pr-30 ">
-      <Title className="text-3xl title review">What Our Users Say</Title>
+      <Title className="text-center #6ee7b7">What Our Users Say</Title>
       <div className="h-40 mt-10 pl-10 pr-10 flex items-center  border-4 border-blue-700">
         <Image src={userIcon} className="w-24" />
         <div className="ml-6">
