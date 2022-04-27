@@ -10,6 +10,7 @@ import Messages from 'pages/Messages';
 import Login from 'pages/Login';
 import SignUp from 'pages/Signup';
 import Profile from 'pages/Profile';
+import Assessment from 'pages/Assessment';
 import Connect from 'pages/Connect';
 import Upload from 'pages/Upload';
 import Timetable from 'pages/Timetable';
@@ -55,6 +56,7 @@ export default function App() {
                   </Route>
                   <Route path="/messages" element={<Messages />}></Route>
                   <Route path="/upload" element={<Upload />}></Route>
+                  <Route path="/assessment" element={<Assessment />}></Route>
                   <Route path="/login" element={<Login />}></Route>
                   <Route path="/signup" element={<SignUp />}></Route>
                   <Route path="/recover" element={<RecoverPassword />}></Route>
