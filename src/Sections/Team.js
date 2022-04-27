@@ -8,7 +8,7 @@ const Team = () => {
   return (
     <div className="w-full">
       <div className="mt-6">
-        <Title className="text-3xl title about">Meet Our Team</Title>
+        <Title className="text-center #6ee7b7 pt-20">Meet Our Team</Title>
       </div>
       <div className="flex mt-12 flex-col sm:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row items-center">
         <div className="basis-1/3">
