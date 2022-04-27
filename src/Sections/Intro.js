@@ -21,7 +21,7 @@ function Intro() {
             </Text>
             <Grid>
               <Grid.Col lg={3} md={4}>
-                <Button className="button bg-[#0646d1] hover:bg-[#0646]" color="#0646d1" radius="xl" component={Link} to="/signup" size="xl">
+                <Button className="button bg-[#6ee7b7] hover:bg-[#6ee7b7]" color="#6ee7b7" radius="xl" component={Link} to="/signup" size="xl">
                   Get Started
                 </Button>
               </Grid.Col>
