@@ -36,9 +36,6 @@ const Upload = () => {
         <div className="mt-10 text-inherit">
           <Text className="text-2xl text-center">Resumes, cover letters, certificates, transcripts, and other documents can be uploaded to your profile</Text>
         </div>
-//         <div className="mt-1 text-inherit">
-//           <Text className="text-base text-center"> *Documents are stored privately, unless explicity sent over Messages*</Text>
-//         </div>
         <div className="mt-10 text-center text-sky-200  ">
           <Button className="text-base text-center">
             <input type="file" onChange={handleFileSelect} />
