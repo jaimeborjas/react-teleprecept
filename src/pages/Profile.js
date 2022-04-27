@@ -259,14 +259,14 @@ export default function Profile() {
               </Text>
               <Text className="flex justify-between">
                 <Title className="inline-block mr-2" order={4}>
-                  Location{' '}
+                  Location:{' '}
                 </Title>
                 {userData.user.userInfo.location ?? ''}
               </Text>
               <Text className="flex justify-between">
                 {' '}
                 <Title className="inline-block mr-2" order={4}>
-                  Bio{' '}
+                  About Me:{' '}
                 </Title>
                 {userData.user.userInfo.bio ?? ''}
               </Text>
