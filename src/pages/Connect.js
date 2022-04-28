@@ -45,7 +45,7 @@ const FilterBar = ({ onLocationFilter, OnSpecialityFilter }) => {
           </Grid.Col>
 
           <Grid.Col span={12}>
-            <button type="submit" className="border-0 outline-0 bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300 cursor-pointer">
+            <button type="submit" className="border-0 outline-0 bg-teal-300 rounded-lg hover:bg-sky-500 transition duration-300 cursor-pointer">
               <p className="text-lg p-2 m-0 text-white">Reset</p>
             </button>
           </Grid.Col>

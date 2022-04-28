@@ -212,7 +212,7 @@ export default function Messages() {
               <div className="w-full border-solid border-0 border-t-2 border-gray-200 rounded-br-lg h-[100px]">
                 <div className="flex flex-row justify-between items-center h-full p-5 gap-4">
                   <input placeholder="Type your message..." className="border-0 outline-0 w-full h-full rounded-lg shadow-lg p-2" type="text" maxLength="100" ref={textRef} />
-                  <button type="submit" className="border-0 outline-0 bg-sky-600 rounded-lg hover:bg-sky-500 transition duration-300 cursor-pointer">
+                  <button type="submit" className="border-0 outline-0 bg-teal-600 rounded-lg hover:bg-teal-500 transition duration-300 cursor-pointer">
                     <p className="text-lg p-2 m-0 text-white">Send</p>
                   </button>
                 </div>

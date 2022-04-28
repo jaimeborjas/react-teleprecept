@@ -204,7 +204,7 @@ export default function Profile() {
               <Textarea ref={bioRef} placeholder="Biography" defaultValue={userData.user.userInfo.bio ?? ''} label="Biography" required />
             </ScrollArea>
             <Group sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Button loading={mutation.isLoading} onClick={submitHanlder} color="blue" style={{ marginTop: 14 }}>
+              <Button loading={mutation.isLoading} onClick={submitHanlder} color="teal" style={{ marginTop: 14 }}>
                 Update
               </Button>
             </Group>
@@ -222,7 +222,7 @@ export default function Profile() {
           <div className="order-first lg:order-2 md:w-1/3 lg:w-4/6 w-full px-12">
             <div className="flex justify-between w-full md:w-full mb-5">
               <Title>Profile</Title>
-              <Button onClick={() => setOpened((o) => !o)}>Edit</Button>
+              <Button color="teal" onClick={() => setOpened((o) => !o)}>Edit</Button>
             </div>
             <div className=" self-center w-5/6 md:w-full h-2/3 space-y-4">
               <Divider className="mb-5" />

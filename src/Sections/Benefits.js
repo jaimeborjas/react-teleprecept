@@ -16,7 +16,7 @@ function Benefits() {
       </div>
       <div className="justify-center sm:flexflex  item-center mt-6 ">
         <Tabs grow position="center">
-          <Tabs.Tab className="title text-sm ml-50 text-teal-300" label="Students">
+          <Tabs.Tab className="title text-lg ml-50 text-teal-300" label="Students">
             <div className="flex w-full px-30 text-center">
               <div className="w-1/4 flex flex-col justify-center items-center p-10 space-x-3 pt-100 ">
                 <img src={money} width="w-16" alt="logo" />
