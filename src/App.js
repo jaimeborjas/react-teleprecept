@@ -39,6 +39,7 @@ export default function App() {
                 colorScheme,
                 fontFamily: 'Roboto',
                 fontFamilyMonospace: 'Roboto',
+                primaryColor: 'teal',
                 headings: {
                   fontFamily: 'Poppins',
                 },

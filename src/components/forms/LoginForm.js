@@ -73,7 +73,7 @@ const LoginForm = () => {
         </Notification>
       )}
       <Group className="flex justify-center">
-        <Button onClick={submitHanlder} color="blue" className="mt-5" loading={loading}>
+        <Button onClick={submitHanlder} className="mt-5" loading={loading}>
           Log In
         </Button>
       </Group>
