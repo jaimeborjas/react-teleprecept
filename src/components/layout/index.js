@@ -22,7 +22,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   link: {
-    color: '#99f6e4',
+    color: theme.colors.teal[7],
     fontSize: 14,
     fontWeight: 'bold',
     padding: 10,
@@ -32,13 +32,13 @@ const useStyles = createStyles((theme) => ({
     width: 'fit-content',
     [`&:hover`]: {
       backgroundColor: 'grey',
-      color: '#5eead4',
+      color: 'white',
       textDecoration: 'none',
     },
   },
   active: {
-    backgroundColor: '#f1f5f9',
-    color: '#5eead4',
+    backgroundColor: theme.colors.teal[5],
+    color: 'white',
   },
   links: {
     paddingRight: 35,
@@ -120,8 +120,13 @@ export default function Layout({ children }) {
           </MediaQuery>
           <div className={classes.links}>
             {menuItems}
-            {notification >0 ? (<div className="relative h-"><span className="w-3 h-3 bg-red-500 rounded-full absolute left-[337px] top-.5 bottom-3"></span> </div>
-             ) : <span></span>}
+            {notification > 0 ? (
+              <div className="relative h-">
+                <span className="w-3 h-3 bg-red-500 rounded-full absolute left-[337px] top-.5 bottom-3"></span>{' '}
+              </div>
+            ) : (
+              <span></span>
+            )}
           </div>
         </Header>
       }
@@ -135,4 +140,3 @@ export default function Layout({ children }) {
     </AppShell>
   );
 }
-
