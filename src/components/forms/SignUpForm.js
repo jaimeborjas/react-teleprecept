@@ -165,7 +165,7 @@ export default function SignUpForm() {
     <div className="h-fit space-y-4">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stepper className="h-full" active={active} onStepClick={setActive} breakpoint="sm">
-          <Stepper.Step label="Fist Step" description="Create An Account">
+          <Stepper.Step label="First Step" description="Create An Account">
             <Group className="w-full mt-10 flex flex-row">
               <div className="w-[264px]">
                 <TextInput {...form.getInputProps('firstName')} size="sm" placeholder="First Name" label="First Name" required />
