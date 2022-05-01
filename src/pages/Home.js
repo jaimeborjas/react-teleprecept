@@ -7,6 +7,7 @@ import Team from '../Sections/Team';
 import Review from '../Sections/Review';
 import styled from 'styled-components';
 import Benefits from '../Sections/Benefits';
+import Footer from '../Sections/Footer';
 import otherpic from '../img/otherpic.jpg';
 
 const Container = styled.div`
@@ -27,6 +28,7 @@ function Home() {
       <Team />
       <Review />
       <Benefits />
+      <Footer />
     </Container>
   );
 }
