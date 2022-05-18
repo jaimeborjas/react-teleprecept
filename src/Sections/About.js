@@ -32,7 +32,7 @@ const About = () => {
           <Grid.Col span={3}>
             <CoverageIcon fill="#34d399" />
             <Title className="text-xl title">Coverage</Title>
-            <Text className="text-md text pr-8 pl-8">Our product is intented to provide service to students and preceptors nationwide.</Text>
+            <Text className="text-md text pr-8 pl-8">Our product is intended to provide service to students and preceptors nationwide.</Text>
           </Grid.Col>
         </Grid>
       </div>
